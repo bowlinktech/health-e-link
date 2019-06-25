@@ -5116,7 +5116,7 @@ public class transactionInDAOImpl implements transactionInDAO {
                     if (configId != 0) {
                         sql = sql + " configId = :configId and ";
                     }
-                    sql = sql + " batchDLId = :id and statusId not in ( :transRELId );";
+                    sql = sql + " batchId = :id and statusId not in ( :transRELId );";
                 } else {
                     sql = sql + " transactionTargetId = :id";
                     id = transactionId;
