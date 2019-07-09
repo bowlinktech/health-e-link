@@ -537,12 +537,12 @@ public class adminConfigController {
         	String parentDirectory = "";
         	if (orgDetails.getParentId() != 0) {
         		 Organization parentOrgDetails = organizationmanager.getOrganizationById(orgDetails.getParentId());
-        		 parentDirectory = "/" + parentOrgDetails.getcleanURL();
+        		 parentDirectory = parentOrgDetails.getcleanURL() + "/";
         	}
             List<configurationRhapsodyFields> emptyRhapsodyFields = new ArrayList<configurationRhapsodyFields>();
             configurationRhapsodyFields pushRFields = new configurationRhapsodyFields();
             pushRFields.setMethod(1);
-            pushRFields.setDirectory(parentDirectory + "/rrInput/"+ orgDetails.getcleanURL());
+            pushRFields.setDirectory(parentDirectory + "/rrInput/"+ orgDetails.getcleanURL() +"/");
             
             configurationRhapsodyFields getRFields = new configurationRhapsodyFields();
             getRFields.setMethod(2);
