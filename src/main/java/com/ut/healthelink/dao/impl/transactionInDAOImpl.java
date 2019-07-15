@@ -2303,7 +2303,7 @@ public class transactionInDAOImpl implements transactionInDAO {
                     + " configId = :configId "
                     + " and (F" + cdt.getFieldNo()
                     + " is not null and length(F" + cdt.getFieldNo() + ") != 0 and forcw is null)"
-                    + " and  batchDLId = :id"
+                    + " and  batchId = :id"
                     + " and configId = :configId and statusId not in ( :transRELId );";
         } else {
             sql = "insert into transactionOutErrors (batchDownloadId, configId, "
@@ -6851,7 +6851,7 @@ public class transactionInDAOImpl implements transactionInDAO {
                 sql = sql + " transactionTargetid  = :id";
                 id = transactionId;
             } else {
-                sql = sql + " batchDlId =  :id";
+                sql = sql + " batchId =  :id";
 
             }
             sql = sql + ")";
