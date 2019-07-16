@@ -146,4 +146,6 @@ public interface configurationDAO {
   configurationCCDElements getCCDElement(Integer elementId) throws Exception;
   
   configurationExcelDetails getExcelDetails (Integer configId, Integer orgId) throws Exception;
+  
+  List getDTCWForDownload(String sqlStatement) throws Exception;
 }

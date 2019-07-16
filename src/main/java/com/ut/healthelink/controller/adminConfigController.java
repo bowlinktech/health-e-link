@@ -73,10 +73,20 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
 import com.ut.healthelink.model.configurationWebServiceFields;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 @Controller
@@ -2645,7 +2655,9 @@ public class adminConfigController {
     /**
      * The '/editCCDElement' function will handle displaying the edit CCD Element screen.
      * 
+     * @param elementId
      * @return This function will display the new ccd element overlay
+     * @throws java.lang.Exception
      */
     @RequestMapping(value = "/editCCDElement", method = RequestMethod.GET)
     public @ResponseBody ModelAndView editCCDElement(@RequestParam(value = "elementId", required = true) int elementId) throws Exception {
@@ -2671,7 +2683,7 @@ public class adminConfigController {
     /**
      * The '/saveCCDElement' POST request will handle submitting the new HL7 Segment Element
      *
-     * @param configurationCCDElements  The object containing the CCD Element form fields
+     * @param ccdElement
      * @param redirectAttr	The variable that will hold values that can be read after the redirect
      *
      * @return	Will return the CCD Customization page on "Save"
@@ -2750,4 +2762,239 @@ public class adminConfigController {
 
     }
     
+    /**
+     * The 'createDataTranslationDownload' GET request will return modal fro choosing a tier to create the crosswalk form.
+     *
+     * @param configId The id of the clicked configuration
+     * @param session
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/createDataTranslationDownload", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView createDataTranslationDownload(
+	    @RequestParam(value = "configId", required = false) Integer configId,HttpSession session) throws Exception {
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("/administrator/configurations/dtDownloadForm");
+        mav.addObject("configId", configId);
+
+        configuration configurationDetails = configurationmanager.getConfigurationById(configId);
+	
+	DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssS");
+	Date date = new Date();
+	String fileName = new StringBuilder().append(configurationDetails.getconfigName().replace(" ","-")).append("-").append(configId).append("-").append("dt").append("-").append(dateFormat.format(date)).toString();
+        
+	mav.addObject("fileName", fileName.toLowerCase());
+
+        return mav;
+    }
+    
+    /**
+     * 
+     * @param configId
+     * @param fileName
+     * @param session
+     * @param response
+     * @return
+     * @throws Exception 
+     */
+    @RequestMapping(value = "/dataTranslationsDownload", method = RequestMethod.GET)
+    @ResponseBody
+    public String dataTranslationsDownload(
+	@RequestParam(value = "configId", required = true) Integer configId, @RequestParam(value = "fileName", required = true) String fileName, HttpSession session,HttpServletResponse response) throws Exception {
+	
+	configuration configurationDetails = configurationmanager.getConfigurationById(configId);
+	
+	if(configurationDetails != null) {
+	   
+	    File dtFile = new File ("/tmp/" + fileName.replaceAll("\\s+","") + ".csv");
+	    
+	    try (BufferedWriter writer = new BufferedWriter(new FileWriter(dtFile))) {
+		
+		List dataTranslations = configurationmanager.getDataTranslationsForDownload(configId);
+		
+		if(!dataTranslations.isEmpty()) {
+		    StringBuilder sb;
+		
+		    Iterator dtDataIt = dataTranslations.iterator();
+
+		    sb = new StringBuilder();
+		    sb.append("Config Name").append(",")
+		    .append("Category").append(",")
+		    .append("Process Order").append(",")
+		    .append("Field Label").append(",")
+		    .append("Macro Id").append(",")
+		    .append("Macro Name").append(",")
+		    .append("Crosswalk Id").append(",")
+		    .append("Crosswalk Name").append(",")
+		    .append("Pass/Clear").append(",")
+		    .append("Field A").append(",")
+		    .append("Field B").append(",")
+		    .append("Constant 1")
+		    .append(",")
+		    .append("Constant 2");
+
+		    writer.write(sb.toString());
+		    if(dtDataIt.hasNext()) {
+			writer.write("\r\n");
+		    }
+
+		    while (dtDataIt.hasNext()) {
+			sb = new StringBuilder();
+
+			Object dtDatarow[] = (Object[]) dtDataIt.next();
+
+			sb.append(dtDatarow[0]).append(",")
+			.append(dtDatarow[1]).append(",")
+			.append(dtDatarow[2]).append(",")
+			.append(dtDatarow[3]).append(",")
+			.append(dtDatarow[4]).append(",")
+			.append(dtDatarow[5]).append(",")
+			.append(dtDatarow[6]).append(",")
+			.append(dtDatarow[7]).append(",")
+			.append(dtDatarow[8]).append(",")
+			.append(dtDatarow[9]).append(",")
+			.append(dtDatarow[10]).append(",")
+			.append(dtDatarow[11]).append(",")
+			.append(dtDatarow[12]);
+
+			writer.write(sb.toString());
+			if(dtDataIt.hasNext()) {
+			    writer.write("\r\n");
+			}
+		    }
+		    
+		     return fileName.replaceAll("\\s+","");
+		}
+		else {
+		    return "";
+		}
+	    }
+	    catch (Exception ex) {
+		return "";
+	    }
+	}
+	else {
+	    return "";
+	}
+    } 
+    
+    /**
+     * The 'createCrosswalkDownload' GET request will return modal for downloading the crosswalks.
+     *
+     * @param configId The id of the clicked configuration
+     * @param session
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/createCrosswalkDownload", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView createCrosswalkDownload(
+	    @RequestParam(value = "configId", required = false) Integer configId,HttpSession session) throws Exception {
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("/administrator/configurations/cwDownloadForm");
+        mav.addObject("configId", configId);
+
+        configuration configurationDetails = configurationmanager.getConfigurationById(configId);
+	
+	DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssS");
+	Date date = new Date();
+	String fileName = new StringBuilder().append(configurationDetails.getconfigName().replace(" ","-")).append("-").append(configId).append("-").append("cw").append("-").append(dateFormat.format(date)).toString();
+        
+	mav.addObject("fileName", fileName.toLowerCase());
+
+        return mav;
+    }
+    
+    /**
+     * 
+     * @param configId
+     * @param fileName
+     * @param session
+     * @param response
+     * @return
+     * @throws Exception 
+     */
+    @RequestMapping(value = "/crosswalksDownload", method = RequestMethod.GET)
+    @ResponseBody
+    public String crosswalksDownload(
+	@RequestParam(value = "configId", required = true) Integer configId, @RequestParam(value = "fileName", required = true) String fileName, HttpSession session,HttpServletResponse response) throws Exception {
+	
+	configuration configurationDetails = configurationmanager.getConfigurationById(configId);
+	
+	if(configurationDetails != null) {
+	   
+	    File dtFile = new File ("/tmp/" + fileName.replaceAll("\\s+","") + ".csv");
+	    
+	    try (BufferedWriter writer = new BufferedWriter(new FileWriter(dtFile))) {
+		
+		List crosswalks = configurationmanager.getCrosswalksForDownload(configId);
+		
+		if(!crosswalks.isEmpty()) {
+		    StringBuilder sb;
+		
+		    Iterator cwDataIt = crosswalks.iterator();
+
+		    sb = new StringBuilder();
+		    sb.append("Crosswalk Name").append(",")
+		    .append("Crosswalk Id").append(",")
+		    .append("Source Value").append(",")
+		    .append("Target Value").append(",")
+		    .append("Desc Value").append(",");
+
+		    writer.write(sb.toString());
+		    if(cwDataIt.hasNext()) {
+			writer.write("\r\n");
+		    }
+
+		    while (cwDataIt.hasNext()) {
+			sb = new StringBuilder();
+
+			Object cwDatarow[] = (Object[]) cwDataIt.next();
+
+			sb.append(cwDatarow[0]).append(",")
+			.append(cwDatarow[1]).append(",")
+			.append(cwDatarow[2]).append(",")
+			.append(cwDatarow[3]).append(",")
+			.append(cwDatarow[4]).append(",");
+
+			writer.write(sb.toString());
+			if(cwDataIt.hasNext()) {
+			    writer.write("\r\n");
+			}
+		    }
+		    
+		    return fileName.replaceAll("\\s+","");
+		}
+		else {
+		    return "";
+		}
+	    }
+	    catch (Exception ex) {
+		return "";
+	    }
+	}
+	else {
+	    return "";
+	}
+    } 
+    
+    @RequestMapping(value = "/downloadDTCWFile/{file}", method = RequestMethod.GET)
+    public void downloadDTCWFile(@PathVariable("file") String file,HttpServletResponse response
+    ) throws Exception {
+	
+	File dtFile = new File ("/tmp/" + file + ".csv");
+	InputStream is = new FileInputStream(dtFile);
+
+	response.setHeader("Content-Disposition", "attachment; filename=\"" + file + ".csv\"");
+	FileCopyUtils.copy(is, response.getOutputStream());
+
+	//Delete the file
+	dtFile.delete();
+
+	 // close stream and return to view
+	response.flushBuffer();
+    } 
 }

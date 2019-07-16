@@ -52,11 +52,11 @@ public class configurationDAOImpl implements configurationDAO {
      */
     @Override
     public Integer createConfiguration(configuration configuration) {
-        Integer lastId;
+	Integer lastId;
 
-        lastId = (Integer) sessionFactory.getCurrentSession().save(configuration);
+	lastId = (Integer) sessionFactory.getCurrentSession().save(configuration);
 
-        return lastId;
+	return lastId;
     }
 
     /**
@@ -69,7 +69,7 @@ public class configurationDAOImpl implements configurationDAO {
      */
     @Override
     public void updateConfiguration(configuration configuration) {
-        sessionFactory.getCurrentSession().update(configuration);
+	sessionFactory.getCurrentSession().update(configuration);
     }
 
     /**
@@ -83,9 +83,9 @@ public class configurationDAOImpl implements configurationDAO {
      */
     @Override
     public configuration getConfigurationById(int configId) {
-        return (configuration) sessionFactory.
-                getCurrentSession().
-                get(configuration.class, configId);
+	return (configuration) sessionFactory.
+		getCurrentSession().
+		get(configuration.class, configId);
     }
 
     /**
@@ -101,38 +101,38 @@ public class configurationDAOImpl implements configurationDAO {
     @SuppressWarnings("unchecked")
     public List<configuration> getConfigurationsByOrgId(int orgId, String searchTerm) {
 
-        if (!"".equals(searchTerm)) {
+	if (!"".equals(searchTerm)) {
 
-            //get a list of message type id's that match the term passed in
-            List<Integer> msgTypeIdList = new ArrayList<Integer>();
-            Criteria findMsgTypes = sessionFactory.getCurrentSession().createCriteria(messageType.class);
-            findMsgTypes.add(Restrictions.like("name", "%" + searchTerm + "%"));
-            List<messageType> msgTypes = findMsgTypes.list();
+	    //get a list of message type id's that match the term passed in
+	    List<Integer> msgTypeIdList = new ArrayList<Integer>();
+	    Criteria findMsgTypes = sessionFactory.getCurrentSession().createCriteria(messageType.class);
+	    findMsgTypes.add(Restrictions.like("name", "%" + searchTerm + "%"));
+	    List<messageType> msgTypes = findMsgTypes.list();
 
-            for (messageType msgType : msgTypes) {
-                msgTypeIdList.add(msgType.getId());
-            }
+	    for (messageType msgType : msgTypes) {
+		msgTypeIdList.add(msgType.getId());
+	    }
 
-            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configuration.class);
+	    Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configuration.class);
 
-            if (msgTypeIdList.isEmpty()) {
-                msgTypeIdList.add(0);
-            }
+	    if (msgTypeIdList.isEmpty()) {
+		msgTypeIdList.add(0);
+	    }
 
-            criteria.add(Restrictions.eq("orgId", orgId));
-            criteria.add(Restrictions.or(
-                    Restrictions.in("messageTypeId", msgTypeIdList)
-            )
-            )
-                    .addOrder(Order.desc("dateCreated"));
+	    criteria.add(Restrictions.eq("orgId", orgId));
+	    criteria.add(Restrictions.or(
+		    Restrictions.in("messageTypeId", msgTypeIdList)
+	    )
+	    )
+		    .addOrder(Order.desc("dateCreated"));
 
-            return criteria.list();
-        } else {
-            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configuration.class);
-            criteria.add(Restrictions.eq("orgId", orgId));
-            criteria.addOrder(Order.desc("dateCreated"));
-            return criteria.list();
-        }
+	    return criteria.list();
+	} else {
+	    Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configuration.class);
+	    criteria.add(Restrictions.eq("orgId", orgId));
+	    criteria.addOrder(Order.desc("dateCreated"));
+	    return criteria.list();
+	}
     }
 
     /**
@@ -147,11 +147,11 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @SuppressWarnings("unchecked")
     public List<configuration> getActiveConfigurationsByOrgId(int orgId) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configuration.class);
-        criteria.add(Restrictions.eq("orgId", orgId));
-        criteria.add(Restrictions.eq("status", true));
+	Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configuration.class);
+	criteria.add(Restrictions.eq("orgId", orgId));
+	criteria.add(Restrictions.eq("status", true));
 
-        return criteria.list();
+	return criteria.list();
     }
 
     /**
@@ -166,11 +166,11 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @SuppressWarnings("unchecked")
     public configuration getConfigurationByName(String configName, int orgId) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configuration.class);
-        criteria.add(Restrictions.like("configName", configName));
-        criteria.add(Restrictions.eq("orgId", orgId));
+	Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configuration.class);
+	criteria.add(Restrictions.like("configName", configName));
+	criteria.add(Restrictions.eq("orgId", orgId));
 
-        return (configuration) criteria.uniqueResult();
+	return (configuration) criteria.uniqueResult();
     }
 
     /**
@@ -183,10 +183,10 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @SuppressWarnings("unchecked")
     public List<configuration> getConfigurations() {
-        Query query = sessionFactory.getCurrentSession().createQuery("from configuration order by dateCreated desc");
+	Query query = sessionFactory.getCurrentSession().createQuery("from configuration order by dateCreated desc");
 
-        List<configuration> configurationList = query.list();
-        return configurationList;
+	List<configuration> configurationList = query.list();
+	return configurationList;
     }
 
     /**
@@ -201,10 +201,10 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public List<configurationDataTranslations> getDataTranslations(int configId) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from configurationDataTranslations where configId = :configId order by processOrder asc");
-        query.setParameter("configId", configId);
+	Query query = sessionFactory.getCurrentSession().createQuery("from configurationDataTranslations where configId = :configId order by processOrder asc");
+	query.setParameter("configId", configId);
 
-        return query.list();
+	return query.list();
     }
 
     /**
@@ -216,11 +216,11 @@ public class configurationDAOImpl implements configurationDAO {
      */
     @Override
     public Long findTotalConfigs() {
-        Query query = sessionFactory.getCurrentSession().createQuery("select count(id) as totalConfigs from configuration");
+	Query query = sessionFactory.getCurrentSession().createQuery("select count(id) as totalConfigs from configuration");
 
-        Long totalConfigs = (Long) query.uniqueResult();
+	Long totalConfigs = (Long) query.uniqueResult();
 
-        return totalConfigs;
+	return totalConfigs;
     }
 
     /**
@@ -235,13 +235,13 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @SuppressWarnings("unchecked")
     public List<configuration> getLatestConfigurations(int maxResults) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from configuration order by dateCreated desc");
+	Query query = sessionFactory.getCurrentSession().createQuery("from configuration order by dateCreated desc");
 
-        //Set the max results to display
-        query.setMaxResults(maxResults);
+	//Set the max results to display
+	query.setMaxResults(maxResults);
 
-        List<configuration> configurationList = query.list();
-        return configurationList;
+	List<configuration> configurationList = query.list();
+	return configurationList;
     }
 
     /**
@@ -257,14 +257,14 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     public Long getTotalConnections(int configId) {
 
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("SELECT count(id) FROM configurationConnections where configId = :configId and status = 1")
-                .setParameter("configId", configId);
+	Query query = sessionFactory.getCurrentSession().createSQLQuery("SELECT count(id) FROM configurationConnections where configId = :configId and status = 1")
+		.setParameter("configId", configId);
 
-        BigInteger totalCount = (BigInteger) query.uniqueResult();
+	BigInteger totalCount = (BigInteger) query.uniqueResult();
 
-        Long totalConnections = totalCount.longValue();
+	Long totalConnections = totalCount.longValue();
 
-        return totalConnections;
+	return totalConnections;
     }
 
     /**
@@ -276,11 +276,11 @@ public class configurationDAOImpl implements configurationDAO {
     @Transactional
     public void updateCompletedSteps(int configId, int stepCompleted) {
 
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("UPDATE configurations set stepsCompleted = :stepCompleted where id = :configId")
-                .setParameter("stepCompleted", stepCompleted)
-                .setParameter("configId", configId);
+	Query query = sessionFactory.getCurrentSession().createSQLQuery("UPDATE configurations set stepsCompleted = :stepCompleted where id = :configId")
+		.setParameter("stepCompleted", stepCompleted)
+		.setParameter("configId", configId);
 
-        query.executeUpdate();
+	query.executeUpdate();
     }
 
     /**
@@ -291,9 +291,9 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public List getFileTypes() {
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("SELECT id, fileType FROM ref_fileTypes order by id asc");
+	Query query = sessionFactory.getCurrentSession().createSQLQuery("SELECT id, fileType FROM ref_fileTypes order by id asc");
 
-        return query.list();
+	return query.list();
     }
 
     /**
@@ -309,12 +309,12 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public String getFileTypesById(int id) {
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("SELECT fileType FROM ref_fileTypes where id = :id")
-                .setParameter("id", id);
+	Query query = sessionFactory.getCurrentSession().createSQLQuery("SELECT fileType FROM ref_fileTypes where id = :id")
+		.setParameter("id", id);
 
-        String fileType = (String) query.uniqueResult();
+	String fileType = (String) query.uniqueResult();
 
-        return fileType;
+	return fileType;
     }
 
     /**
@@ -327,12 +327,12 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public String getFieldName(int fieldId) {
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("SELECT fieldDesc FROM configurationFormFields where id = :fieldId")
-                .setParameter("fieldId", fieldId);
+	Query query = sessionFactory.getCurrentSession().createSQLQuery("SELECT fieldDesc FROM configurationFormFields where id = :fieldId")
+		.setParameter("fieldId", fieldId);
 
-        String fieldName = (String) query.uniqueResult();
+	String fieldName = (String) query.uniqueResult();
 
-        return fieldName;
+	return fieldName;
     }
 
     /**
@@ -346,10 +346,10 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public void deleteDataTranslations(int configId, int categoryId) {
-        Query deleteTranslations = sessionFactory.getCurrentSession().createQuery("delete from configurationDataTranslations where configId = :configId and categoryId = :categoryId");
-        deleteTranslations.setParameter("configId", configId);
-        deleteTranslations.setParameter("categoryId", categoryId);
-        deleteTranslations.executeUpdate();
+	Query deleteTranslations = sessionFactory.getCurrentSession().createQuery("delete from configurationDataTranslations where configId = :configId and categoryId = :categoryId");
+	deleteTranslations.setParameter("configId", configId);
+	deleteTranslations.setParameter("categoryId", categoryId);
+	deleteTranslations.executeUpdate();
     }
 
     /**
@@ -361,7 +361,7 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public void saveDataTranslations(configurationDataTranslations translations) {
-        sessionFactory.getCurrentSession().save(translations);
+	sessionFactory.getCurrentSession().save(translations);
     }
 
     /**
@@ -372,12 +372,12 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public List<Macros> getMacrosByCategory(int categoryId) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from Macros where categoryId = :categoryId order by macro_short_name asc");
-        query.setParameter("categoryId", categoryId);
+	Query query = sessionFactory.getCurrentSession().createQuery("from Macros where categoryId = :categoryId order by macro_short_name asc");
+	query.setParameter("categoryId", categoryId);
 
-        List<Macros> macros = query.list();
+	List<Macros> macros = query.list();
 
-        return macros;
+	return macros;
     }
 
     /**
@@ -389,8 +389,8 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public List<Macros> getMacros() {
-        Query query = sessionFactory.getCurrentSession().createQuery("from Macros where categoryId = 1 order by macro_short_name asc");
-        return query.list();
+	Query query = sessionFactory.getCurrentSession().createQuery("from Macros where categoryId = 1 order by macro_short_name asc");
+	return query.list();
     }
 
     /**
@@ -401,7 +401,7 @@ public class configurationDAOImpl implements configurationDAO {
      * @return macros object
      */
     public Macros getMacroById(int macroId) {
-        return (Macros) sessionFactory.getCurrentSession().get(Macros.class, macroId);
+	return (Macros) sessionFactory.getCurrentSession().get(Macros.class, macroId);
     }
 
     /**
@@ -416,10 +416,10 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public List<configurationConnection> getAllConnections() {
-        Query query = sessionFactory.getCurrentSession().createQuery("from configurationConnection order by dateCreated desc");
+	Query query = sessionFactory.getCurrentSession().createQuery("from configurationConnection order by dateCreated desc");
 
-        List<configurationConnection> connections = query.list();
-        return connections;
+	List<configurationConnection> connections = query.list();
+	return connections;
     }
 
     /**
@@ -435,13 +435,13 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public List<configurationConnection> getLatestConnections(int maxResults) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from configurationConnection order by dateCreated desc");
+	Query query = sessionFactory.getCurrentSession().createQuery("from configurationConnection order by dateCreated desc");
 
-        //Set the max results to display
-        query.setMaxResults(maxResults);
+	//Set the max results to display
+	query.setMaxResults(maxResults);
 
-        List<configurationConnection> connections = query.list();
-        return connections;
+	List<configurationConnection> connections = query.list();
+	return connections;
     }
 
     /**
@@ -455,12 +455,12 @@ public class configurationDAOImpl implements configurationDAO {
     @Transactional
     @SuppressWarnings("unchecked")
     public List<configurationConnection> getConnectionsByConfiguration(int configId, int userId) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from configurationConnection where sourceConfigId = :configId and id in (select connectionId from configurationConnectionSenders where userId = :userId)");
-        query.setParameter("configId", configId);
-        query.setParameter("userId", userId);
+	Query query = sessionFactory.getCurrentSession().createQuery("from configurationConnection where sourceConfigId = :configId and id in (select connectionId from configurationConnectionSenders where userId = :userId)");
+	query.setParameter("configId", configId);
+	query.setParameter("userId", userId);
 
-        List<configurationConnection> connections = query.list();
-        return connections;
+	List<configurationConnection> connections = query.list();
+	return connections;
     }
 
     /**
@@ -473,11 +473,11 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public List<configurationConnection> getConnectionsByTargetConfiguration(int configId) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from configurationConnection where targetConfigId = :configId");
-        query.setParameter("configId", configId);
+	Query query = sessionFactory.getCurrentSession().createQuery("from configurationConnection where targetConfigId = :configId");
+	query.setParameter("configId", configId);
 
-        List<configurationConnection> connections = query.list();
-        return connections;
+	List<configurationConnection> connections = query.list();
+	return connections;
     }
 
     /**
@@ -490,11 +490,11 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public Integer saveConnection(configurationConnection connection) {
-        Integer connectionId;
+	Integer connectionId;
 
-        connectionId = (Integer) sessionFactory.getCurrentSession().save(connection);
+	connectionId = (Integer) sessionFactory.getCurrentSession().save(connection);
 
-        return connectionId;
+	return connectionId;
 
     }
 
@@ -510,7 +510,7 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public void saveConnectionSenders(configurationConnectionSenders senders) {
-        sessionFactory.getCurrentSession().save(senders);
+	sessionFactory.getCurrentSession().save(senders);
     }
 
     /**
@@ -525,7 +525,7 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public void saveConnectionReceivers(configurationConnectionReceivers receivers) {
-        sessionFactory.getCurrentSession().save(receivers);
+	sessionFactory.getCurrentSession().save(receivers);
     }
 
     /**
@@ -539,7 +539,7 @@ public class configurationDAOImpl implements configurationDAO {
      */
     @Override
     public configurationConnection getConnection(int connectionId) {
-        return (configurationConnection) sessionFactory.getCurrentSession().get(configurationConnection.class, connectionId);
+	return (configurationConnection) sessionFactory.getCurrentSession().get(configurationConnection.class, connectionId);
     }
 
     /**
@@ -552,10 +552,10 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public List<configurationConnectionSenders> getConnectionSenders(int connectionId) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configurationConnectionSenders.class);
-        criteria.add(Restrictions.eq("connectionId", connectionId));
+	Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configurationConnectionSenders.class);
+	criteria.add(Restrictions.eq("connectionId", connectionId));
 
-        return criteria.list();
+	return criteria.list();
     }
 
     /**
@@ -568,10 +568,10 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public List<configurationConnectionReceivers> getConnectionReceivers(int connectionId) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configurationConnectionReceivers.class);
-        criteria.add(Restrictions.eq("connectionId", connectionId));
+	Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configurationConnectionReceivers.class);
+	criteria.add(Restrictions.eq("connectionId", connectionId));
 
-        return criteria.list();
+	return criteria.list();
     }
 
     /**
@@ -584,10 +584,10 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public void removeConnectionSenders(int connectionId) {
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("DELETE from configurationConnectionSenders where connectionId = :connectionId")
-                .setParameter("connectionId", connectionId);
+	Query query = sessionFactory.getCurrentSession().createSQLQuery("DELETE from configurationConnectionSenders where connectionId = :connectionId")
+		.setParameter("connectionId", connectionId);
 
-        query.executeUpdate();
+	query.executeUpdate();
     }
 
     /**
@@ -600,10 +600,10 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public void removeConnectionReceivers(int connectionId) {
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("DELETE from configurationConnectionReceivers where connectionId = :connectionId")
-                .setParameter("connectionId", connectionId);
+	Query query = sessionFactory.getCurrentSession().createSQLQuery("DELETE from configurationConnectionReceivers where connectionId = :connectionId")
+		.setParameter("connectionId", connectionId);
 
-        query.executeUpdate();
+	query.executeUpdate();
     }
 
     /**
@@ -616,7 +616,7 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public void updateConnection(configurationConnection connection) {
-        sessionFactory.getCurrentSession().update(connection);
+	sessionFactory.getCurrentSession().update(connection);
     }
 
     /**
@@ -627,20 +627,20 @@ public class configurationDAOImpl implements configurationDAO {
      * @return The function will return a configurationSchedules object containing the details for the schedule.
      */
     public configurationSchedules getScheduleDetails(int configId) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from configurationSchedules where configId = :configId");
-        query.setParameter("configId", configId);
-        
-        configurationSchedules scheduleDetails;
+	Query query = sessionFactory.getCurrentSession().createQuery("from configurationSchedules where configId = :configId");
+	query.setParameter("configId", configId);
 
-        if (query.list().size() > 1) {
-            scheduleDetails = (configurationSchedules) query.list().get(0);
-            
-            return scheduleDetails;
-        } else {
-            scheduleDetails = (configurationSchedules) query.uniqueResult();
+	configurationSchedules scheduleDetails;
 
-            return scheduleDetails;
-        }
+	if (query.list().size() > 1) {
+	    scheduleDetails = (configurationSchedules) query.list().get(0);
+
+	    return scheduleDetails;
+	} else {
+	    scheduleDetails = (configurationSchedules) query.uniqueResult();
+
+	    return scheduleDetails;
+	}
 
     }
 
@@ -652,7 +652,7 @@ public class configurationDAOImpl implements configurationDAO {
      * @return This function does not return anything.
      */
     public void saveSchedule(configurationSchedules scheduleDetails) {
-        sessionFactory.getCurrentSession().saveOrUpdate(scheduleDetails);
+	sessionFactory.getCurrentSession().saveOrUpdate(scheduleDetails);
     }
 
     /**
@@ -664,10 +664,10 @@ public class configurationDAOImpl implements configurationDAO {
      */
     @Override
     public configurationMessageSpecs getMessageSpecs(int configId) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from configurationMessageSpecs where configId = :configId");
-        query.setParameter("configId", configId);
+	Query query = sessionFactory.getCurrentSession().createQuery("from configurationMessageSpecs where configId = :configId");
+	query.setParameter("configId", configId);
 
-        return (configurationMessageSpecs) query.uniqueResult();
+	return (configurationMessageSpecs) query.uniqueResult();
     }
 
     /**
@@ -681,23 +681,23 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     public void updateMessageSpecs(configurationMessageSpecs messageSpecs, int transportDetailId, int clearFields) {
 
-        //if clearFields == 1 then we need to clear out the configuration form fields, mappings and data
-        //translations. This will allow the admin to change the configuration transport method after
-        //one was previously selected. This will only be available while the configuration is not active.
-        if (clearFields == 1) {
-            //Delete the existing data translactions
-            Query deleteTranslations = sessionFactory.getCurrentSession().createSQLQuery("DELETE from configurationDataTranslations where configId = :configId");
-            deleteTranslations.setParameter("configId", messageSpecs.getconfigId());
-            deleteTranslations.executeUpdate();
+	//if clearFields == 1 then we need to clear out the configuration form fields, mappings and data
+	//translations. This will allow the admin to change the configuration transport method after
+	//one was previously selected. This will only be available while the configuration is not active.
+	if (clearFields == 1) {
+	    //Delete the existing data translactions
+	    Query deleteTranslations = sessionFactory.getCurrentSession().createSQLQuery("DELETE from configurationDataTranslations where configId = :configId");
+	    deleteTranslations.setParameter("configId", messageSpecs.getconfigId());
+	    deleteTranslations.executeUpdate();
 
-            //Delete the existing form fields
-            Query deleteFields = sessionFactory.getCurrentSession().createSQLQuery("DELETE from configurationFormFields where configId = :configId and transportDetailId = :transportDetailId");
-            deleteFields.setParameter("configId", messageSpecs.getconfigId());
-            deleteFields.setParameter("transportDetailId", transportDetailId);
-            deleteFields.executeUpdate();
-        }
+	    //Delete the existing form fields
+	    Query deleteFields = sessionFactory.getCurrentSession().createSQLQuery("DELETE from configurationFormFields where configId = :configId and transportDetailId = :transportDetailId");
+	    deleteFields.setParameter("configId", messageSpecs.getconfigId());
+	    deleteFields.setParameter("transportDetailId", transportDetailId);
+	    deleteFields.executeUpdate();
+	}
 
-        sessionFactory.getCurrentSession().saveOrUpdate(messageSpecs);
+	sessionFactory.getCurrentSession().saveOrUpdate(messageSpecs);
 
     }
 
@@ -712,65 +712,65 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     public List<configuration> getActiveConfigurationsByUserId(int userId, int transportMethod) throws Exception {
 
-        /* Find all SENDER connections for the passed in user */
-        Criteria findAuthConnections = sessionFactory.getCurrentSession().createCriteria(configurationConnectionSenders.class);
-        findAuthConnections.add(Restrictions.eq("userId", userId));
+	/* Find all SENDER connections for the passed in user */
+	Criteria findAuthConnections = sessionFactory.getCurrentSession().createCriteria(configurationConnectionSenders.class);
+	findAuthConnections.add(Restrictions.eq("userId", userId));
 
-        /* This variables (senderConnections) will hold the list of authorized connections */
-        List<configurationConnectionSenders> senderConnections = findAuthConnections.list();
+	/* This variables (senderConnections) will hold the list of authorized connections */
+	List<configurationConnectionSenders> senderConnections = findAuthConnections.list();
 
-        /* 
+	/* 
          Create an emtpy array that will hold the list of configurations associated to the
          found connections.
-         */
-        List<Integer> senderConfigList = new ArrayList<Integer>();
+	 */
+	List<Integer> senderConfigList = new ArrayList<Integer>();
 
-        if (senderConnections.isEmpty()) {
-            senderConfigList.add(0);
-        } else {
-            /* Search the connections by connectionId to pull the sourceConfigId */
-            for (configurationConnectionSenders connection : senderConnections) {
-                Criteria findConnectionDetails = sessionFactory.getCurrentSession().createCriteria(configurationConnection.class);
-                findConnectionDetails.add(Restrictions.eq("id", connection.getconnectionId()));
-                configurationConnection connectionDetails = (configurationConnection) findConnectionDetails.uniqueResult();
+	if (senderConnections.isEmpty()) {
+	    senderConfigList.add(0);
+	} else {
+	    /* Search the connections by connectionId to pull the sourceConfigId */
+	    for (configurationConnectionSenders connection : senderConnections) {
+		Criteria findConnectionDetails = sessionFactory.getCurrentSession().createCriteria(configurationConnection.class);
+		findConnectionDetails.add(Restrictions.eq("id", connection.getconnectionId()));
+		configurationConnection connectionDetails = (configurationConnection) findConnectionDetails.uniqueResult();
 
-                /* Add the sourceConfigId to the array */
-                senderConfigList.add(connectionDetails.getsourceConfigId());
-                findConnectionDetails = null;
-            }
-        }
+		/* Add the sourceConfigId to the array */
+		senderConfigList.add(connectionDetails.getsourceConfigId());
+		findConnectionDetails = null;
+	    }
+	}
 
-        /* 
+	/* 
          Query to get a list of all ERG configurations that the logged in
          user is authorized to create
-         */
-        List<Integer> ergConfigList = new ArrayList<Integer>();
-        Criteria findERGConfigs = sessionFactory.getCurrentSession().createCriteria(configurationTransport.class);
-        findERGConfigs.add(Restrictions.eq("transportMethodId", transportMethod)
-        ).add(Restrictions.and(Restrictions.in("configId", senderConfigList)));
+	 */
+	List<Integer> ergConfigList = new ArrayList<Integer>();
+	Criteria findERGConfigs = sessionFactory.getCurrentSession().createCriteria(configurationTransport.class);
+	findERGConfigs.add(Restrictions.eq("transportMethodId", transportMethod)
+	).add(Restrictions.and(Restrictions.in("configId", senderConfigList)));
 
-        List<configurationTransport> ergConfigs = findERGConfigs.list();
+	List<configurationTransport> ergConfigs = findERGConfigs.list();
 
-        for (configurationTransport config : ergConfigs) {
-            ergConfigList.add(config.getconfigId());
-        }
+	for (configurationTransport config : ergConfigs) {
+	    ergConfigList.add(config.getconfigId());
+	}
 
-        if (ergConfigList.isEmpty()) {
-            ergConfigList.add(0);
-        }
+	if (ergConfigList.isEmpty()) {
+	    ergConfigList.add(0);
+	}
 
-        /*
+	/*
          Finally query the configuration table to get all configurations in the authorized list
          of configuration Ids.
-         */
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configuration.class);
-        criteria.add(Restrictions.eq("status", true));
-        criteria.add(Restrictions.eq("sourceType", 1));
-        criteria.add(Restrictions.and(
-                Restrictions.in("id", ergConfigList)
-        ));
+	 */
+	Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configuration.class);
+	criteria.add(Restrictions.eq("status", true));
+	criteria.add(Restrictions.eq("sourceType", 1));
+	criteria.add(Restrictions.and(
+		Restrictions.in("id", ergConfigList)
+	));
 
-        return criteria.list();
+	return criteria.list();
 
     }
 
@@ -778,35 +778,35 @@ public class configurationDAOImpl implements configurationDAO {
     @Transactional
     @SuppressWarnings("unchecked")
     public List<configurationDataTranslations> getDataTranslationsWithFieldNo(
-            int configId, int categoryId) {
-        Query query = sessionFactory
-                .getCurrentSession()
-                .createSQLQuery(
-                        "select configurationDataTranslations.*, fieldNo, fieldType from configurationDataTranslations, configurationFormFields"
-                        + " where configurationDataTranslations.fieldId = configurationFormFields.id "
-                        + " and configurationDataTranslations.configId = :configId and categoryId = :categoryId order by processorder asc;")
-                .setResultTransformer(
-                        Transformers.aliasToBean(configurationDataTranslations.class))
-                .setParameter("categoryId", categoryId).setParameter("configId", configId);
+	    int configId, int categoryId) {
+	Query query = sessionFactory
+		.getCurrentSession()
+		.createSQLQuery(
+			"select configurationDataTranslations.*, fieldNo, fieldType from configurationDataTranslations, configurationFormFields"
+			+ " where configurationDataTranslations.fieldId = configurationFormFields.id "
+			+ " and configurationDataTranslations.configId = :configId and categoryId = :categoryId order by processorder asc;")
+		.setResultTransformer(
+			Transformers.aliasToBean(configurationDataTranslations.class))
+		.setParameter("categoryId", categoryId).setParameter("configId", configId);
 
-        List<configurationDataTranslations> cdtList = query.list();
+	List<configurationDataTranslations> cdtList = query.list();
 
-        return cdtList;
+	return cdtList;
     }
 
     @Override
     @Transactional
     @SuppressWarnings("unchecked")
     public List<CrosswalkData> getCrosswalkData(int cwId) {
-        try {
-            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(CrosswalkData.class);
-            criteria.add(Restrictions.eq("crosswalkId", cwId));
+	try {
+	    Criteria criteria = sessionFactory.getCurrentSession().createCriteria(CrosswalkData.class);
+	    criteria.add(Restrictions.eq("crosswalkId", cwId));
 
-            return criteria.list();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+	    return criteria.list();
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    return null;
+	}
     }
 
     /**
@@ -822,14 +822,14 @@ public class configurationDAOImpl implements configurationDAO {
     @Transactional
     @SuppressWarnings("unchecked")
     public HL7Details getHL7Details(int configId) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HL7Details.class);
-        criteria.add(Restrictions.eq("configId", configId));
+	Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HL7Details.class);
+	criteria.add(Restrictions.eq("configId", configId));
 
-        if (criteria.uniqueResult() == null) {
-            return null;
-        } else {
-            return (HL7Details) criteria.uniqueResult();
-        }
+	if (criteria.uniqueResult() == null) {
+	    return null;
+	} else {
+	    return (HL7Details) criteria.uniqueResult();
+	}
 
     }
 
@@ -843,11 +843,11 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public List<HL7Segments> getHL7Segments(int hl7Id) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HL7Segments.class);
-        criteria.add(Restrictions.eq("hl7Id", hl7Id));
-        criteria.addOrder(Order.asc("displayPos"));
+	Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HL7Segments.class);
+	criteria.add(Restrictions.eq("hl7Id", hl7Id));
+	criteria.addOrder(Order.asc("displayPos"));
 
-        return criteria.list();
+	return criteria.list();
     }
 
     /**
@@ -860,12 +860,12 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public List<HL7Elements> getHL7Elements(int hl7Id, int segmentId) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HL7Elements.class);
-        criteria.add(Restrictions.eq("hl7Id", hl7Id));
-        criteria.add(Restrictions.eq("segmentId", segmentId));
-        criteria.addOrder(Order.asc("displayPos"));
+	Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HL7Elements.class);
+	criteria.add(Restrictions.eq("hl7Id", hl7Id));
+	criteria.add(Restrictions.eq("segmentId", segmentId));
+	criteria.addOrder(Order.asc("displayPos"));
 
-        return criteria.list();
+	return criteria.list();
     }
 
     /**
@@ -878,11 +878,11 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public List<HL7ElementComponents> getHL7ElementComponents(int elementId) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HL7ElementComponents.class);
-        criteria.add(Restrictions.eq("elementId", elementId));
-        criteria.addOrder(Order.asc("displayPos"));
+	Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HL7ElementComponents.class);
+	criteria.add(Restrictions.eq("elementId", elementId));
+	criteria.addOrder(Order.asc("displayPos"));
 
-        return criteria.list();
+	return criteria.list();
     }
 
     /**
@@ -893,7 +893,7 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public void updateHL7Details(HL7Details details) {
-        sessionFactory.getCurrentSession().update(details);
+	sessionFactory.getCurrentSession().update(details);
 
     }
 
@@ -905,7 +905,7 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public void updateHL7Segments(HL7Segments segment) {
-        sessionFactory.getCurrentSession().update(segment);
+	sessionFactory.getCurrentSession().update(segment);
     }
 
     /**
@@ -916,7 +916,7 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public void updateHL7Elements(HL7Elements element) {
-        sessionFactory.getCurrentSession().update(element);
+	sessionFactory.getCurrentSession().update(element);
     }
 
     /**
@@ -927,7 +927,7 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public void updateHL7ElementComponent(HL7ElementComponents component) {
-        sessionFactory.getCurrentSession().update(component);
+	sessionFactory.getCurrentSession().update(component);
     }
 
     /**
@@ -938,11 +938,11 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public int saveHL7Details(HL7Details details) {
-        Integer lastId;
+	Integer lastId;
 
-        lastId = (Integer) sessionFactory.getCurrentSession().save(details);
+	lastId = (Integer) sessionFactory.getCurrentSession().save(details);
 
-        return lastId;
+	return lastId;
     }
 
     /**
@@ -953,11 +953,11 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public int saveHL7Segment(HL7Segments newSegment) {
-        Integer lastId;
+	Integer lastId;
 
-        lastId = (Integer) sessionFactory.getCurrentSession().save(newSegment);
+	lastId = (Integer) sessionFactory.getCurrentSession().save(newSegment);
 
-        return lastId;
+	return lastId;
     }
 
     /**
@@ -968,11 +968,11 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public int saveHL7Element(HL7Elements newElement) {
-        Integer lastId;
+	Integer lastId;
 
-        lastId = (Integer) sessionFactory.getCurrentSession().save(newElement);
+	lastId = (Integer) sessionFactory.getCurrentSession().save(newElement);
 
-        return lastId;
+	return lastId;
     }
 
     /**
@@ -983,25 +983,25 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public void saveHL7Component(HL7ElementComponents newcomponent) {
-        sessionFactory.getCurrentSession().save(newcomponent);
+	sessionFactory.getCurrentSession().save(newcomponent);
     }
 
     @Override
     @Transactional
     public String getMessageTypeNameByConfigId(Integer configId) {
-        try {
-            String sql = ("select name from messageTypes where id in (select messageTypeId from configurations where id = :configId);");
-            Query query = sessionFactory.getCurrentSession().createSQLQuery(sql).addScalar("name", StandardBasicTypes.STRING);
-            query.setParameter("configId", configId);
+	try {
+	    String sql = ("select name from messageTypes where id in (select messageTypeId from configurations where id = :configId);");
+	    Query query = sessionFactory.getCurrentSession().createSQLQuery(sql).addScalar("name", StandardBasicTypes.STRING);
+	    query.setParameter("configId", configId);
 
-            String mtName = (String) query.list().get(0);
+	    String mtName = (String) query.list().get(0);
 
-            return mtName;
-        } catch (Exception ex) {
-            System.err.println("getMessageTypeNameByConfigId " + ex.getCause());
-            ex.printStackTrace();
-            return null;
-        }
+	    return mtName;
+	} catch (Exception ex) {
+	    System.err.println("getMessageTypeNameByConfigId " + ex.getCause());
+	    ex.printStackTrace();
+	    return null;
+	}
     }
 
     /**
@@ -1012,52 +1012,52 @@ public class configurationDAOImpl implements configurationDAO {
     @Override
     @Transactional
     public List getEncodings() {
-        try {
-            Query query = sessionFactory.getCurrentSession().createSQLQuery("select id, encoding from ref_encoding order by id asc");
-            return query.list();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.err.println("getEncodings - " + ex.getCause());
-            return null;
-        }
+	try {
+	    Query query = sessionFactory.getCurrentSession().createSQLQuery("select id, encoding from ref_encoding order by id asc");
+	    return query.list();
+	} catch (Exception ex) {
+	    ex.printStackTrace();
+	    System.err.println("getEncodings - " + ex.getCause());
+	    return null;
+	}
     }
 
     @Override
     @Transactional
     public void removeHL7ElementComponent(Integer componentId) {
-        Query deleteComponent = sessionFactory.getCurrentSession().createQuery("delete from HL7ElementComponents where id = :componentId");
-        deleteComponent.setParameter("componentId", componentId);
-        deleteComponent.executeUpdate();
+	Query deleteComponent = sessionFactory.getCurrentSession().createQuery("delete from HL7ElementComponents where id = :componentId");
+	deleteComponent.setParameter("componentId", componentId);
+	deleteComponent.executeUpdate();
     }
-    
+
     @Override
     @Transactional
     public void removeHL7Element(Integer elementId) {
-        Query deleteComponents = sessionFactory.getCurrentSession().createQuery("delete from HL7ElementComponents where elementId = :elementId");
-        deleteComponents.setParameter("elementId", elementId);
-        deleteComponents.executeUpdate();
-        
-        Query deleteElement = sessionFactory.getCurrentSession().createQuery("delete from HL7Elements where id = :elementId");
-        deleteElement.setParameter("elementId", elementId);
-        deleteElement.executeUpdate();
+	Query deleteComponents = sessionFactory.getCurrentSession().createQuery("delete from HL7ElementComponents where elementId = :elementId");
+	deleteComponents.setParameter("elementId", elementId);
+	deleteComponents.executeUpdate();
+
+	Query deleteElement = sessionFactory.getCurrentSession().createQuery("delete from HL7Elements where id = :elementId");
+	deleteElement.setParameter("elementId", elementId);
+	deleteElement.executeUpdate();
     }
-    
+
     @Override
     @Transactional
     public void removeHL7Segment(Integer segmentId) {
-        Query deleteComponents = sessionFactory.getCurrentSession().createSQLQuery("delete from configurationhl7elementvalues where elementId in (select id from configurationhl7elements where segmentId = :segmentId)");
-        deleteComponents.setParameter("segmentId", segmentId);
-        deleteComponents.executeUpdate();
-        
-        Query deleteElement = sessionFactory.getCurrentSession().createQuery("delete from HL7Elements where segmentId = :segmentId");
-        deleteElement.setParameter("segmentId", segmentId);
-        deleteElement.executeUpdate();
-        
-        Query deleteSegment = sessionFactory.getCurrentSession().createQuery("delete from HL7Segments where id = :segmentId");
-        deleteSegment.setParameter("segmentId", segmentId);
-        deleteSegment.executeUpdate();
+	Query deleteComponents = sessionFactory.getCurrentSession().createSQLQuery("delete from configurationhl7elementvalues where elementId in (select id from configurationhl7elements where segmentId = :segmentId)");
+	deleteComponents.setParameter("segmentId", segmentId);
+	deleteComponents.executeUpdate();
+
+	Query deleteElement = sessionFactory.getCurrentSession().createQuery("delete from HL7Elements where segmentId = :segmentId");
+	deleteElement.setParameter("segmentId", segmentId);
+	deleteElement.executeUpdate();
+
+	Query deleteSegment = sessionFactory.getCurrentSession().createQuery("delete from HL7Segments where id = :segmentId");
+	deleteSegment.setParameter("segmentId", segmentId);
+	deleteSegment.executeUpdate();
     }
-    
+
     /**
      * The 'getCCDElements' function will return the CCD elements for the passed in configuration.
      *
@@ -1071,65 +1071,75 @@ public class configurationDAOImpl implements configurationDAO {
     @Transactional
     @SuppressWarnings("unchecked")
     public List<configurationCCDElements> getCCDElements(Integer configId) throws Exception {
-        
-        Query query = sessionFactory
-             .getCurrentSession()
-             .createSQLQuery(
-                     "select configurationCCDElements.*, configurationFormFields.fieldLabel as fieldLabel from configurationCCDElements LEFT OUTER JOIN configurationFormFields on \n" +
-"configurationFormFields.configId = configurationCCDElements.configId and configurationFormFields.fieldNo = configurationCCDElements.fieldValue"
-                     + " where configurationCCDElements.configId = :configId ")
-             .setResultTransformer(
-                     Transformers.aliasToBean(configurationCCDElements.class))
-             .setParameter("configId", configId);
 
-        List<configurationCCDElements> elements = query.list();
-        
-        return elements;
-        
+	Query query = sessionFactory
+		.getCurrentSession()
+		.createSQLQuery(
+			"select configurationCCDElements.*, configurationFormFields.fieldLabel as fieldLabel from configurationCCDElements LEFT OUTER JOIN configurationFormFields on \n"
+			+ "configurationFormFields.configId = configurationCCDElements.configId and configurationFormFields.fieldNo = configurationCCDElements.fieldValue"
+			+ " where configurationCCDElements.configId = :configId ")
+		.setResultTransformer(
+			Transformers.aliasToBean(configurationCCDElements.class))
+		.setParameter("configId", configId);
+
+	List<configurationCCDElements> elements = query.list();
+
+	return elements;
+
     }
-    
+
     /**
-     * The 'getCCDElement' function will return the configurationCCDElement object for the passed in
-     * elementId
-     * 
+     * The 'getCCDElement' function will return the configurationCCDElement object for the passed in elementId
+     *
      * @param elementId The id of the selected element.
-     * 
+     *
      * @return This function will return a single configurationCCDElement
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     @Transactional
     public configurationCCDElements getCCDElement(Integer elementId) throws Exception {
-        return (configurationCCDElements) sessionFactory.
-                getCurrentSession().
-                get(configurationCCDElements.class, elementId);
+	return (configurationCCDElements) sessionFactory.
+		getCurrentSession().
+		get(configurationCCDElements.class, elementId);
     }
-    
+
     /**
      * The 'saveCCDElement' function will save the new CCD element.
-     * 
-     * @param ccdElement    This will hold the new ccdElement object
-     * @throws Exception 
+     *
+     * @param ccdElement This will hold the new ccdElement object
+     * @throws Exception
      */
     @Override
     @Transactional
     public void saveCCDElement(configurationCCDElements ccdElement) throws Exception {
-        sessionFactory.getCurrentSession().saveOrUpdate(ccdElement);
+	sessionFactory.getCurrentSession().saveOrUpdate(ccdElement);
     }
 
-	@Override
-	@Transactional
-	public configurationExcelDetails getExcelDetails (Integer configId, Integer orgId) throws Exception {
-		 Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configurationExcelDetails.class);
-	     criteria.add(Restrictions.eq("configId", configId));
-	     criteria.add(Restrictions.eq("orgId", orgId));
-	     
-	     if (criteria.list().size() > 0) {
-	    	 return (configurationExcelDetails) criteria.list().get(0);
-	     } else  {
-	    	 return null;
-	     }
-	     
+    @Override
+    @Transactional
+    public configurationExcelDetails getExcelDetails(Integer configId, Integer orgId) throws Exception {
+	Criteria criteria = sessionFactory.getCurrentSession().createCriteria(configurationExcelDetails.class);
+	criteria.add(Restrictions.eq("configId", configId));
+	criteria.add(Restrictions.eq("orgId", orgId));
+
+	if (criteria.list().size() > 0) {
+	    return (configurationExcelDetails) criteria.list().get(0);
+	} else {
+	    return null;
 	}
+
+    }
     
+    @Transactional
+    public List getDTCWForDownload(String sqlStatement) throws Exception {
+	
+	Query query = sessionFactory.getCurrentSession().createSQLQuery(sqlStatement);
+
+	List dataTranslations = query.list();
+	
+	return dataTranslations;
+	
+    }
+
 }
