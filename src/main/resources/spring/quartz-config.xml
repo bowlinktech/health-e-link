@@ -8,7 +8,7 @@
  
 
     
-    <schedule>
+    <!-- <schedule>
         <job>
             <name>LoadMassBatches</name>
             <group>processGroup</group>
@@ -21,7 +21,6 @@
                 <name>LoadMassBatchesTrigger</name>
                 <job-name>LoadMassBatches</job-name>
                 <job-group>processGroup</job-group>
-                <!-- <cron-expression>0 15/0 1,4,7,10,13,16,19,22 * * ?</cron-expression> -->
                 <cron-expression>0 0/2 * * * ?</cron-expression>
             </cron>
         </trigger>
@@ -40,7 +39,6 @@
                 <name>ProcessMassInBoundBatchesTrigger</name>
                 <job-name>ProcessMassInBoundBatches</job-name>
                 <job-group>processGroup</job-group>
-                <!-- <cron-expression>0 0/0 0,3,6,9,12,15,18,21 * * ?</cron-expression> -->
                  <cron-expression>0 0/3 * * * ?</cron-expression>
             </cron>
         </trigger>
@@ -102,7 +100,7 @@
         </trigger>
     </schedule>-->
 
-    <!---->
+    <!--
     <schedule>
         <job>
             <name>MoveRRFiles</name>
@@ -119,6 +117,6 @@
                 <cron-expression>0 0/1 * * * ?</cron-expression>
             </cron>
         </trigger>
-    </schedule>
+    </schedule>-->
 
 </job-scheduling-data>
