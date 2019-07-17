@@ -660,7 +660,7 @@ public class configurationManagerImpl implements configurationManager {
 	    + "select constant1 crosswalkId from configurationdatatranslations where macroid in (143, 129) and configId = " + configId
 	    + " union "
 	    + "select crosswalkId from rel_crosswalkdata where crosswalkId in ("
-	    + "select crosswalkId from configurationdatatranslations where configId = @configId order by processOrder)) cws"
+	    + "select crosswalkId from configurationdatatranslations where configId = " + configId + " order by processOrder)) cws"
 	    + ")) cwdata on cw.id = cwdata.crosswalkId "
 	    + "order by name, cwdata.id";
 	
