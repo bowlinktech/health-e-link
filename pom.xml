@@ -350,6 +350,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>root</finalName>
+        <finalName>ROOT</finalName>
     </build>
 </project>

@@ -145,4 +145,8 @@ public interface configurationManager {
   configurationExcelDetails getExcelDetails (Integer configId, Integer orgId) throws Exception;
   
   List <String> getConfigHeaderCols (configurationMessageSpecs cms) throws Exception;
+  
+  List getDataTranslationsForDownload (Integer configId) throws Exception;
+  
+  List getCrosswalksForDownload (Integer configId) throws Exception;
 }
