@@ -22,10 +22,12 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.ut.healthelink.model.Crosswalks;
+import com.ut.healthelink.model.Organization;
 import com.ut.healthelink.model.messageType;
 import com.ut.healthelink.model.messageTypeDataTranslations;
 import com.ut.healthelink.model.messageTypeFormFields;
 import com.ut.healthelink.service.messageTypeManager;
+import com.ut.healthelink.service.organizationManager;
 
 @Controller
 @RequestMapping("/administrator/library")
@@ -33,6 +35,9 @@ public class adminLibController {
 
     @Autowired
     private messageTypeManager messagetypemanager;
+    
+    @Autowired
+    private organizationManager organizationmanager;
 
     /**
      * The private maxResults variable will hold the number of results to show per list page.
@@ -528,6 +533,12 @@ public class adminLibController {
     /**
      * The '/createCrosswalk' function will be used to create a new crosswalk
      *
+     * @param crosswalkDetails
+     * @param result
+     * @param redirectAttr
+     * @param orgId
+     * @return 
+     * @throws java.lang.Exception
      * @Return The function will either return the crosswalk form on error or redirect to the data translation page.
      */
     @RequestMapping(value = "/createCrosswalk", method = RequestMethod.POST)
@@ -572,8 +583,11 @@ public class adminLibController {
     }
 
     /**
-     * The '/viewCrosswalk{params}' function will return the details of the selected crosswalk. The results will be displayed in the overlay.
+     * The '/viewCrosswalk{params}' function will return the details of the selected crosswalk.The results will be displayed in the overlay.
      *
+     * @param cwId
+     * @return 
+     * @throws java.lang.Exception
      * @Param	i	This will hold the id of the selected crosswalk
      *
      * @Return	This function will return the crosswalk details view.
@@ -588,6 +602,12 @@ public class adminLibController {
         //Get the details of the selected crosswalk
         Crosswalks crosswalkDetails = messagetypemanager.getCrosswalk(cwId);
         mav.addObject("crosswalkDetails", crosswalkDetails);
+	
+	/* Get organization directory name */
+	if(crosswalkDetails.getOrgId() > 0) {
+	    Organization orgDetails = organizationmanager.getOrganizationById(crosswalkDetails.getOrgId());
+	    mav.addObject("cleanOrgURL", orgDetails.getcleanURL()); 
+	}
 
         //Get the data associated with the selected crosswalk
         @SuppressWarnings("rawtypes")

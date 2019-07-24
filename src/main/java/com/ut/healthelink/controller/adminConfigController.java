@@ -2997,4 +2997,45 @@ public class adminConfigController {
 	 // close stream and return to view
 	response.flushBuffer();
     } 
+    
+    /**
+     * The '/createCrosswalk' function will be used to create a new crosswalk
+     *
+     * @param crosswalkDetails
+     * @param result
+     * @param redirectAttr
+     * @param orgId
+     * @return 
+     * @throws java.lang.Exception
+     * @Return The function will either return the crosswalk form on error or redirect to the data translation page.
+     */
+    @RequestMapping(value = "/createCrosswalk", method = RequestMethod.POST)
+    public @ResponseBody
+    int createCrosswalk(@ModelAttribute(value = "crosswalkDetails") Crosswalks crosswalkDetails, BindingResult result, RedirectAttributes redirectAttr, @RequestParam int orgId) throws Exception {
+	
+	crosswalkDetails.setOrgId(orgId);
+        int lastId = messagetypemanager.createCrosswalk(crosswalkDetails);
+
+	return lastId;
+    }
+    
+    /**
+     * The '/UploadNewFile' function will be used to upload a new file for an existing crosswalk.
+     *
+     * @param crosswalkDetails
+     * @param result
+     * @param redirectAttr
+     * @return 
+     * @throws java.lang.Exception 
+     * @Return The function will either return the crosswalk form on error or redirect to the data translation page.
+     */
+    @RequestMapping(value = "/uploadnewfileCrosswalk", method = RequestMethod.POST)
+    public @ResponseBody 
+    int uploadnewfileCrosswalk(@ModelAttribute(value = "crosswalkDetails") Crosswalks crosswalkDetails, BindingResult result, RedirectAttributes redirectAttr, @RequestParam int orgId) throws Exception {
+
+        int lastId = messagetypemanager.uploadNewFileForCrosswalk(crosswalkDetails);
+	
+	return lastId;
+
+    }
 }
