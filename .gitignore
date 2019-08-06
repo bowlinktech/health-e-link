@@ -10,3 +10,4 @@ src/main/webapp/dspResources/.DS_Store
 .DS_Store
 /.rebel.xml.bak
 /src/main/resources/rebel.xml
+/.settings/org.eclipse.jdt.core.prefs
