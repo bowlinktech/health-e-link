@@ -2176,7 +2176,7 @@ public class transactionOutDAOImpl implements transactionOutDAO {
 					sql += " F"+entityIdFCol+" entity3Col,";
 				}
 				sql +=	 " transactionInId from transactiontranslatedin "
-				+ " where batchid = :batchUploadId and (length(f11) = 0 or  f"+cff.getFieldNo()+" is null) and statusId = 40) tti "
+				+ " where batchid = :batchUploadId and (length(f"+cff.getFieldNo()+") = 0 or  f"+cff.getFieldNo()+" is null) and statusId = 40) tti "
 				+ " on tti.transactionInId = tir.transactionInId;";
 				
 		Query insertData = sessionFactory.getCurrentSession().createSQLQuery(sql)

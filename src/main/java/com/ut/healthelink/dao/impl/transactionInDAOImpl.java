@@ -7092,7 +7092,7 @@ public class transactionInDAOImpl implements transactionInDAO {
         if (foroutboundProcessing == false) {
             sql = "update transactionTranslatedIn JOIN (select sourcevalue as matchid, targetvalue as label   "
             		+ " from rel_crosswalkdata where crosswalkId = :crosswalkId) tbl_concat "
-            		+ " ON REPLACE(REPLACE(trim(F" + cdt.getFieldNo() + "), '\n', ''), '\r', '') = tbl_concat.matchid   "
+            		+ " ON Replace(REPLACE(REPLACE(trim(F" + cdt.getFieldNo() + "), '\n', ''), '\r', ''), '\t','') = tbl_concat.matchid   "
             		+ " SET transactiontranslatedin.forCW = tbl_concat.label  ";
             if (transactionId == 0) {
                 sql = sql + " where configId = :configId "
@@ -7104,7 +7104,7 @@ public class transactionInDAOImpl implements transactionInDAO {
         } else {
         	sql = "update transactionTranslatedOut JOIN (select sourcevalue as matchid, targetvalue as label   "
             		+ " from rel_crosswalkdata where crosswalkId = :crosswalkId) tbl_concat "
-            		+ " ON REPLACE(REPLACE(trim(F" + cdt.getFieldNo() + "), '\n', ''), '\r', '') = tbl_concat.matchid   "
+            		+ " ON Replace(REPLACE(REPLACE(trim(F" + cdt.getFieldNo() + "), '\n', ''), '\r', ''), '\t','') = tbl_concat.matchid   "
             		+ " SET transactionTranslatedOut.forCW = tbl_concat.label  ";
             if (transactionId == 0) {
                 sql = sql + "  where configId = :configId and batchId = :id and statusId not in ( :transRELId );";
