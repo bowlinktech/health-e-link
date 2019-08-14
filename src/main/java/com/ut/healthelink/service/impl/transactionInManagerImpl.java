@@ -2067,6 +2067,7 @@ public class transactionInManagerImpl implements transactionInManager {
                 // if entire batch failed and have no configIds, there will be no error handling found
                 if (getRecordCounts(batchId, Arrays.asList(11), false) == getRecordCounts(batchId, new ArrayList<Integer>(), false)) {
                     //entire batch failed, we reject entire batch
+                	insertProcessingError(processingSysErrorId, null, batchId, null, null, null, null, false, false, "Entire batch failed or there were no records found in file.  Please check file delimiter.");
                     updateRecordCounts(batchId, errorStatusIds, false, "errorRecordCount");
                     updateRecordCounts(batchId, new ArrayList<Integer>(), false, "totalRecordCount");
                     updateBatchStatus(batchId, 7, "endDateTime");

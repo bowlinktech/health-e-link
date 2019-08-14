@@ -609,24 +609,24 @@ public class configurationManagerImpl implements configurationManager {
 	String insertCols = "";
 
 	if (cms.getrptField1() != 0) {
-	    selectCols += ("F" + cms.getrptField1() + ",");
+	    selectCols += ("F" + cms.getrptField1() + ", ");
 	    insertCols += "reportField1Data, ";
 	}
-	if (cms.getrptField1() != 0) {
-	    selectCols += ("F" + cms.getrptField2() + ",");
+	if (cms.getrptField2() != 0) {
+	    selectCols += ("F" + cms.getrptField2() + ", ");
 	    insertCols += "reportField2Data, ";
 	}
-	if (cms.getrptField1() != 0) {
-	    selectCols += ("F" + cms.getrptField3() + ",");
+	if (cms.getrptField3() != 0) {
+	    selectCols += ("F" + cms.getrptField3() + ", ");
 	    insertCols += "reportField3Data, ";
 	}
-	if (cms.getrptField1() != 0) {
+	if (cms.getrptField4() != 0) {
 	    selectCols += ("F" + cms.getrptField4());
 	    insertCols += "reportField4Data";
 	}
-	if (insertCols.endsWith(",")) {
-	    insertCols += insertCols.substring(0, insertCols.length() - 1);
-	    selectCols += selectCols.substring(0, selectCols.length() - 1);
+	if (insertCols.endsWith(", ")) {
+	    insertCols = insertCols.substring(0, insertCols.length() - 2);
+	    selectCols = selectCols.substring(0, selectCols.length() - 2);
 	}
 
 	List<String> headerCols = Arrays.asList(selectCols, insertCols);
