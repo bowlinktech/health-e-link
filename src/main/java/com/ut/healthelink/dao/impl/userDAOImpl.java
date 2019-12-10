@@ -269,9 +269,10 @@ public class userDAOImpl implements userDAO {
     @Override
     public Integer getUserByIdentifier(String identifier) {
 
-        String sql = ("select id from users where lower(email) = '" + identifier + "' or lower(username) = '" + identifier + "' or lower(concat(concat(firstName,' '),lastName)) = '" + identifier + "'");
+        String sql = ("select id from users where lower(email) = :identifier or lower(username) = :identifier or lower(concat(concat(firstName,' '),lastName)) = :identifier");
 
         Query findUser = sessionFactory.getCurrentSession().createSQLQuery(sql);
+        findUser.setParameter("identifier", identifier);
 
         if (findUser.list().size() > 1) {
             return null;

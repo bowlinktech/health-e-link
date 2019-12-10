@@ -386,6 +386,7 @@ public class mainController {
         User userDetails = usermanager.getUserById(userId);
         userDetails.setresetCode(randomCode);
 
+        /** This section is not in use
         //Return the sections for the clicked user
         List<userAccess> userSections = usermanager.getuserSections(userId);
         List<Integer> userSectionList = new ArrayList<Integer>();
@@ -395,8 +396,8 @@ public class mainController {
         }
 
         userDetails.setsectionList(userSectionList);
-
-        usermanager.updateUser(userDetails);
+         **/
+        usermanager.updateUserOnly(userDetails);
 
         /* Sent Reset Email */
         mailMessage messageDetails = new mailMessage();
