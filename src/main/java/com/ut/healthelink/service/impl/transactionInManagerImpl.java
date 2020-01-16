@@ -852,7 +852,7 @@ public class transactionInManagerImpl implements transactionInManager {
             Integer rejectedCount = getRecordCounts(batch.getId(), rejectIds, false, true);
             
             if (rejectedCount == batch.gettotalRecordCount()) {
-             	sendEmailToAdmin((new Date() + "<br/>Please login and review. Entire batch failed.  <br/>Batch Id -  " + batch.getId() + "<br/> UT Batch Name " + batch.getutBatchName() + " <br/>Original batch file name - " + batch.getoriginalFileName()), "Entire Batch Failed");
+             	sendEmailToAdmin((new Date() + "<br/>Please login and review. Entire batch failed.  <br/>Batch Id -  " + batch.getId() + "<br/> UT Batch Name " + batch.getutBatchName() + " <br/>Original batch file name - " + batch.getoriginalFileName() + "<br/>Config Name: " + configurationManager.getConfigurationById(batch.getConfigId()).getconfigName()), "Entire Batch Failed");
             } else if (rejectedCount > 0) {
                 sendRejectNotification(batch, rejectedCount);
             }
