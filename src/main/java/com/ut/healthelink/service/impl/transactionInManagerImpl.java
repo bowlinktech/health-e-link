@@ -852,7 +852,7 @@ public class transactionInManagerImpl implements transactionInManager {
             Integer rejectedCount = getRecordCounts(batch.getId(), rejectIds, false, true);
             
             if (rejectedCount == batch.gettotalRecordCount()) {
-             	sendEmailToAdmin((new Date() + "<br/>Please login and review. Entire batch failed.  <br/>Batch Id -  " + batch.getId() + "<br/> UT Batch Name " + batch.getutBatchName() + " <br/>Original batch file name - " + batch.getoriginalFileName() + "<br/>Config Name: " + configurationManager.getConfigurationById(batch.getConfigId()).getconfigName()), "Entire Batch Failed");
+            	sendBatchRejectEmail((new Date() + "<br/>Please login and review. Entire batch failed.  <br/>Batch Id -  " + batch.getId() + "<br/> UT Batch Name " + batch.getutBatchName() + " <br/>Original batch file name - " + batch.getoriginalFileName() + "<br/>Config Name: " + configurationManager.getConfigurationById(batch.getConfigId()).getconfigName()), "Entire Batch Failed");
             } else if (rejectedCount > 0) {
                 sendRejectNotification(batch, rejectedCount);
             }
@@ -3480,6 +3480,25 @@ public class transactionInManagerImpl implements transactionInManager {
             mail.setmessageBody(message);
             mail.setmessageSubject(subject + " " + myProps.getProperty("server.identity"));
             mail.settoEmailAddress(myProps.getProperty("admin.email"));
+            emailManager.sendEmail(mail);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new Exception(ex);
+        }
+    }
+    
+    @Override
+    public void sendBatchRejectEmail(String message, String subject) throws Exception {
+        try {
+            mailMessage mail = new mailMessage();
+            mail.setfromEmailAddress("support@health-e-link.net");
+            mail.setmessageBody(message);
+            mail.setmessageSubject(subject + " " + myProps.getProperty("server.identity"));
+            mail.settoEmailAddress(myProps.getProperty("reject.email"));
+            List<String> ccAddresses = Arrays.asList(myProps.getProperty("admin.email"));
+            String[] ccEmailAddresses = new String[ccAddresses.size()];
+            ccEmailAddresses = ccAddresses.toArray(ccEmailAddresses);
+            mail.setccEmailAddress(ccEmailAddresses);
             emailManager.sendEmail(mail);
         } catch (Exception ex) {
             ex.printStackTrace();
