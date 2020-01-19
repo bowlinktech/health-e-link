@@ -550,4 +550,5 @@ public interface transactionInManager {
      
      Integer clearTransactionInDroppedValuesByBatchId(Integer batchUploadId);
 
+     void sendBatchRejectEmail(String message, String subject) throws Exception;
 }
