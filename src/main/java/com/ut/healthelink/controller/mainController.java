@@ -216,7 +216,7 @@ public class mainController {
     @RequestMapping(value = "/contact", method = RequestMethod.POST)
     public ModelAndView contactPageSend(@RequestParam String name, @RequestParam String company, @RequestParam String address, @RequestParam String city, 
             @RequestParam String state, @RequestParam String zip, @RequestParam String phone, @RequestParam String ext, @RequestParam String fax, @RequestParam String email, 
-            @RequestParam String interestedIn, @RequestParam String comments) throws Exception {
+            @RequestParam(value="interestedIn", required = false, defaultValue = "") String interestedIn, @RequestParam String comments) throws Exception {
         
        StringBuilder sb = new StringBuilder();
        
@@ -253,8 +253,10 @@ public class mainController {
         sb.append("<br /><br />");
         
         messageDetails.setmessageBody(sb.toString());
-        
-        emailMessageManager.sendEmail(messageDetails); 
+	
+	if(!"".equals(interestedIn)) {
+	    emailMessageManager.sendEmail(messageDetails); 
+	}
 
         ModelAndView mav = new ModelAndView();
         
