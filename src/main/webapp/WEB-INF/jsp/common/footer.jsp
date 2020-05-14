@@ -41,11 +41,7 @@
         </nav>
 
             <p class="vcard">
-                <span class="fn">BOWlink Technologies Inc.</span> |
-                <span class="adr"><span class="post-office-box">P.O. Box 275</span>,
-                    <span class="region">Auburn, MA</span>
-                    <span class="postal-code">01501</span></span> |
-                Phone: <span class="tel">(774) 272-0313</span> 
+                <span class="fn">BOWlink Technologies Inc.</span>
             </p>
         </p>
     </div>
