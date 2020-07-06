@@ -19,7 +19,9 @@ import java.math.BigInteger;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -61,6 +63,8 @@ public class mainController {
     @Autowired
     private newsletterManager newslettermanager;
     
+    @Resource(name = "myProps")
+    private Properties myProps;
     
     @RequestMapping(value = "/files/{file_name}", method = RequestMethod.GET)
     public void getFile(@PathVariable("file_name") String fileName, HttpServletResponse response) throws FileNotFoundException {
@@ -239,8 +243,10 @@ public class mainController {
       
 	String response = request.getParameter("g-recaptcha-response");
     	String action = request.getParameter("action");
-    	
-    	URI verifyUri = URI.create(String.format("https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s","6LdlQq4ZAAAAAOB1N4sXyu7_6WUCcfBbQb_ed7od", response));
+	
+	String reCaptchaKey = myProps.getProperty("recaptcha.key");
+	
+    	URI verifyUri = URI.create(String.format("https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s",reCaptchaKey, response));
 	
 	RestTemplate restTemplate = new RestTemplate();
 	
@@ -295,7 +301,7 @@ public class mainController {
 	messageDetails.setmessageBody(sb.toString());
 
 	if(!"".equals(interestedIn)) {
-	    emailMessageManager.sendEmail(messageDetails); 
+	   emailMessageManager.sendEmail(messageDetails); 
 	}
         
         return mav;
