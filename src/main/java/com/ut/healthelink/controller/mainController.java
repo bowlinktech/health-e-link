@@ -1,5 +1,6 @@
 package com.ut.healthelink.controller;
 
+import com.ut.healthelink.model.GoogleResponse;
 import com.ut.healthelink.model.User;
 import com.ut.healthelink.model.mailMessage;
 import com.ut.healthelink.model.newsArticle;
@@ -15,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
@@ -212,58 +215,88 @@ public class mainController {
     
     /**
      * The '/contact' POST request will display the contact page.
+     * @param name
+     * @param company
+     * @param address
+     * @param city
+     * @param state
+     * @param zip
+     * @param phone
+     * @param ext
+     * @param fax
+     * @param email
+     * @param interestedIn
+     * @param comments
+     * @param request
+     * @return 
+     * @throws java.lang.Exception 
      */
     @RequestMapping(value = "/contact", method = RequestMethod.POST)
     public ModelAndView contactPageSend(@RequestParam String name, @RequestParam String company, @RequestParam String address, @RequestParam String city, 
             @RequestParam String state, @RequestParam String zip, @RequestParam String phone, @RequestParam String ext, @RequestParam String fax, @RequestParam String email, 
-            @RequestParam(value="interestedIn", required = false, defaultValue = "") String interestedIn, @RequestParam String comments) throws Exception {
+            @RequestParam(value="interestedIn", required = false, defaultValue = "") String interestedIn, @RequestParam String comments, HttpServletRequest request) throws Exception {
         
-       StringBuilder sb = new StringBuilder();
-       
-       mailMessage messageDetails = new mailMessage();
-        
-       messageDetails.settoEmailAddress("information@health-e-link.net");
-       messageDetails.setfromEmailAddress("support@health-e-link.net");
-       messageDetails.setmessageSubject("Health-e-Link Contact Form Submission");
-       
-       
-        sb.append("Name: "+ name);
-        sb.append("<br /><br />");
-        sb.append("Company / Organization: " + company);
-        sb.append("<br /><br />");
-        sb.append("Address: " + address);
-        sb.append("<br /><br />");
-        sb.append("City: " + city);
-        sb.append("<br /><br />");
-        sb.append("State: " + state);
-        sb.append("<br /><br />");
-        sb.append("Zip: " + zip);
-        sb.append("<br /><br />");
-        sb.append("Phone: " + phone);
-        sb.append("<br /><br />");
-        sb.append("Ext: " + ext);
-        sb.append("<br /><br />");
-        sb.append("Fax: " + fax);
-        sb.append("<br /><br />");
-        sb.append("Email: " + email);
-        sb.append("<br /><br />");
-        sb.append("Interested In: " + interestedIn);
-        sb.append("<br /><br />");
-        sb.append("Comments: " + comments);
-        sb.append("<br /><br />");
-        
-        messageDetails.setmessageBody(sb.toString());
+      
+	String response = request.getParameter("g-recaptcha-response");
+    	String action = request.getParameter("action");
+    	
+    	URI verifyUri = URI.create(String.format("https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s","6LdlQq4ZAAAAAOB1N4sXyu7_6WUCcfBbQb_ed7od", response));
 	
+	RestTemplate restTemplate = new RestTemplate();
+	
+	GoogleResponse googleResponse = restTemplate.getForObject(verifyUri, GoogleResponse.class);
+	
+	ModelAndView mav = new ModelAndView();
+	mav.setViewName("/contact");
+	mav.addObject("pageTitle", "Contact Us");
+	
+	mailMessage messageDetails = new mailMessage();
+	messageDetails.setfromEmailAddress("support@health-e-link.net");
+	
+	if(!googleResponse.isSuccess() || !googleResponse.getAction().equals(action) || googleResponse.getScore() < 0.5) {
+	    messageDetails.settoEmailAddress("cmccue@health-e-link.net");
+	    messageDetails.setmessageSubject("Captcha Error - Health-e-Link Contact Form");
+	    
+	    mav.addObject("error","Invalid Captcha!");
+	}
+	else {
+	    messageDetails.settoEmailAddress("information@health-e-link.net");
+	    messageDetails.setmessageSubject("Health-e-Link Contact Form Submission");
+	    
+	    mav.addObject("sent","sent");
+	}
+	
+	StringBuilder sb = new StringBuilder();
+	sb.append("Name: ").append(name);
+	sb.append("<br /><br />");
+	sb.append("Company / Organization: ").append(company);
+	sb.append("<br /><br />");
+	sb.append("Address: ").append(address);
+	sb.append("<br /><br />");
+	sb.append("City: ").append(city);
+	sb.append("<br /><br />");
+	sb.append("State: ").append(state);
+	sb.append("<br /><br />");
+	sb.append("Zip: ").append(zip);
+	sb.append("<br /><br />");
+	sb.append("Phone: ").append(phone);
+	sb.append("<br /><br />");
+	sb.append("Ext: ").append(ext);
+	sb.append("<br /><br />");
+	sb.append("Fax: ").append(fax);
+	sb.append("<br /><br />");
+	sb.append("Email: ").append(email);
+	sb.append("<br /><br />");
+	sb.append("Interested In: ").append(interestedIn);
+	sb.append("<br /><br />");
+	sb.append("Comments: ").append(comments);
+	sb.append("<br /><br />");
+
+	messageDetails.setmessageBody(sb.toString());
+
 	if(!"".equals(interestedIn)) {
 	    emailMessageManager.sendEmail(messageDetails); 
 	}
-
-        ModelAndView mav = new ModelAndView();
-        
-        mav.setViewName("/contact");
-        mav.addObject("pageTitle", "Contact Us");
-        mav.addObject("sent","sent");
-        
         
         return mav;
     }
