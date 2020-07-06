@@ -43,6 +43,11 @@
                         <strong>Your request has been submitted!</strong>
                     </div>
                 </c:if>
+                <c:if test="${not empty error}">
+                    <div id="translationErrorMsgDiv"  class="alert alert-danger">
+                        <strong>Invalid Captcha!</strong>
+                    </div>
+                </c:if>
 
                 <p>
                     Health-e-link's staff would be happy to contact you and discuss how our technology solutions and support services may help you create expanded service delivery and patient care models, improve your 
@@ -51,6 +56,8 @@
                 </p>
 
                 <form:form id="contactForm" method="post" role="form">
+                    <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" />
+                    <input type="hidden" name="action" value="validate_captcha">
                     <div class="form-container">
                         <div id="fieldDiv_name" class="form-group">
                             <label for="name" class="control-label">Name *</label>

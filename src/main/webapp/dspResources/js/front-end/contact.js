@@ -6,6 +6,13 @@
 
 require(['./main'], function() {
     require(['jquery'], function($) {
+        
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6LdlQq4ZAAAAAO9cnnot0LGzpnVw9ELYP7VKC-Ye', {action:'validate_captcha'}).then(function(token) {
+                // add token value to form
+                document.getElementById('g-recaptcha-response').value = token;
+            });
+        });
 
         $("input:text,form").attr("autocomplete", "off");
         
