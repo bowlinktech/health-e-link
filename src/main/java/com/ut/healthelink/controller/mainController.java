@@ -536,12 +536,11 @@ public class mainController {
 
         if (usedCode == null) {
             return randomCode;
-        } else {
-
+        } 
+        else {
             return generateRandomCode();
 
         }
-
     }
     
     /**
@@ -575,9 +574,18 @@ public class mainController {
 
                 return 1;
             }
-
         }
-       
-        
+    }
+    
+    /**
+     * The '/forgotPassword' POST request is an invalid call and will redirect the user to our about page.
+     *
+     * @return	The about page
+     * @throws java.lang.Exception
+     */
+    @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
+    public ModelAndView forgotPasswordPost() throws Exception {
+        ModelAndView mav = new ModelAndView(new RedirectView("/about"));
+        return mav;
     }
 }
