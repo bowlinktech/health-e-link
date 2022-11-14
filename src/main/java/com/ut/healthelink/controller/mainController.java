@@ -335,7 +335,6 @@ public class mainController {
        messageDetails.setfromEmailAddress("support@health-e-link.net");
        messageDetails.setmessageSubject("Health-e-Link Partner Request Form Submission");
        
-       
         sb.append("Name: "+ name);
         sb.append("<br /><br />");
         sb.append("Title: "+ title);
@@ -372,8 +371,6 @@ public class mainController {
         mav.setViewName("/partners");
         mav.addObject("pageTitle", "Partners");
         mav.addObject("sent","sent");
-        
-        
         return mav;
     }
 
@@ -386,10 +383,48 @@ public class mainController {
      *
      */
     @RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
-    public ModelAndView forgotPassword(HttpSession session) throws Exception {
+    public ModelAndView forgotPassword() throws Exception {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("/forgotPassword");
+        return mav;
+    }
+    
+    /**
+     * The '/forgotPassword' GET request will be used to display the forget password form (In a modal)
+     *
+     *
+     * @param request
+     * @param session
+     * @return	The forget password form page
+     * @throws java.lang.Exception
+     *
+     *
+     */
+    @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
+    public ModelAndView forgotPasswordPost(HttpServletRequest request, HttpSession session) throws Exception {
+        
+        String remoteIP = request.getRemoteAddr();
+        
+        StringBuilder sb = new StringBuilder();
+       
+       mailMessage messageDetails = new mailMessage();
+        
+       messageDetails.settoEmailAddress("cmccue@health-e-link.net");
+       messageDetails.setfromEmailAddress("monitor@health-e-link.net");
+       messageDetails.setmessageSubject("Health-e-Link Forgot Password IP Spam");
+       
+        sb.append("Remote IP: "+ remoteIP);
+        sb.append("<br /><br />");
+        
+        messageDetails.setmessageBody(sb.toString());
+        
+        emailMessageManager.sendEmail(messageDetails); 
 
         ModelAndView mav = new ModelAndView();
         mav.setViewName("/forgotPassword");
+        
+        //Kill created session
+        session.invalidate();
 
         return mav;
     }
@@ -398,6 +433,7 @@ public class mainController {
      * The '/forgotPassword.do' POST request will be used to find the account information for the user and send an email.
      *
      *
+     * @param identifier
      */
     @RequestMapping(value = "/forgotPassword.do", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
