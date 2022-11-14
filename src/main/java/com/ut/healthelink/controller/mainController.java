@@ -410,7 +410,7 @@ public class mainController {
        mailMessage messageDetails = new mailMessage();
         
        messageDetails.settoEmailAddress("cmccue@health-e-link.net");
-       messageDetails.setfromEmailAddress("gchan@health-e-link.net");
+       messageDetails.setfromEmailAddress("support@health-e-link.net");
        messageDetails.setmessageSubject("Health-e-Link Forgot Password IP Spam");
        
         sb.append("Remote IP: "+ remoteIP);
@@ -421,7 +421,7 @@ public class mainController {
         emailMessageManager.sendEmail(messageDetails); 
 
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/forgotPassword");
+        mav.setViewName("/about");
         
         //Kill created session
         session.invalidate();
