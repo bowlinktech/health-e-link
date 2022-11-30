@@ -409,7 +409,7 @@ public class mainController {
        
        mailMessage messageDetails = new mailMessage();
         
-       messageDetails.settoEmailAddress("cmccue@health-e-link.net");
+       messageDetails.settoEmailAddress("gchan@health-e-link.net");
        messageDetails.setfromEmailAddress("support@health-e-link.net");
        messageDetails.setmessageSubject("Health-e-Link Forgot Password IP Spam");
        
