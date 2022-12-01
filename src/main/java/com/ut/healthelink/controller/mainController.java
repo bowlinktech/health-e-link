@@ -322,4 +322,43 @@ public class mainController {
        mav.setViewName("/home");
        return mav;
     }
+    
+    /**
+     * The '/login' request will be the default request of the translator. The request will serve up the home page of the translator.
+     *
+     * @return	the home page view
+     * @throws Exception
+     */
+    @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView login() throws Exception {
+       ModelAndView mav = new ModelAndView();
+       mav.setViewName("/home");
+       return mav;
+    }
+    
+    /**
+     * The '/forgotPassword' request will be the default request of the translator. The request will serve up the home page of the translator.
+     *
+     * @return	the home page view
+     * @throws Exception
+     */
+    @RequestMapping(value = "/forgotPassword", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView forgotPassword() throws Exception {
+       ModelAndView mav = new ModelAndView();
+       mav.setViewName("/home");
+       return mav;
+    }
+    
+    /**
+     * The '/forgetPassword' request will be the default request of the translator. The request will serve up the home page of the translator.
+     *
+     * @return	the home page view
+     * @throws Exception
+     */
+    @RequestMapping(value = "/forgetPassword", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView forgetPassword() throws Exception {
+       ModelAndView mav = new ModelAndView();
+       mav.setViewName("/home");
+       return mav;
+    }
 }
