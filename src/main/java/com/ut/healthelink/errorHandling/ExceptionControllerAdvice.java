@@ -6,10 +6,8 @@
 
 package com.ut.healthelink.errorHandling;
 
-import com.ut.healthelink.model.User;
 import com.ut.healthelink.model.mailMessage;
 import com.ut.healthelink.service.emailMessageManager;
-import com.ut.healthelink.service.userManager;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -38,8 +36,6 @@ public class ExceptionControllerAdvice {
     @Autowired
     private emailMessageManager emailMessageManager;
     
-    @Autowired
-    private userManager usermanager;
  
     @ExceptionHandler(Exception.class)
     public ModelAndView exception(HttpSession session, Exception e, HttpServletRequest request, 
@@ -67,22 +63,6 @@ public class ExceptionControllerAdvice {
         	ex.printStackTrace();
         }
         
-        /* If a user is logged in then send along the user details */
-        
-        if(session.getAttribute("userDetails") != null || authentication != null) {
-            User userInfo = (User)session.getAttribute("userDetails");
-            
-            if(userInfo == null && authentication != null) {
-            // see if it is an admin that is logged in
-            	userInfo = usermanager.getUserByUserName(authentication.getName());          	
-            }
-            if (userInfo != null) {	
-            	sb.append("Logged in User: " + userInfo.getFirstName() + " " + userInfo.getLastName() + " (ID: "+ userInfo.getId() + ")");
-                sb.append(System.getProperty("line.separator"));
-                sb.append("User OrgId: " + userInfo.getOrgId());
-                sb.append(System.getProperty("line.separator"));
-            }
-        }
        
         sb.append("Error: "+ e);
         sb.append("<br /><br />");

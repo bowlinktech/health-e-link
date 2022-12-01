@@ -60,7 +60,7 @@
                         </li>
                         <%--<li ${param['page'] == 'partners' ? 'class="active"' : ''}><a href="<c:url value='/partners'/>" title="Partners">Partners</a></li>--%>
                         <li ${param['page'] == 'contact' ? 'class="active"' : ''}><a href="<c:url value='/contact'/>" title="Contact Us">Contact Us</a></li>
-                        <li ${param['page-id'] == 'profile' ? 'class="active"': ''}>
+                        <%--<li ${param['page-id'] == 'profile' ? 'class="active"': ''}>
                             <c:choose>
                                 <c:when test="${not empty pageContext.request.userPrincipal.name}">
                                     <a href="javascript:void(0);" title="My Account" data-toggle="dropdown">My Account <b class="caret"></b></a>
@@ -81,7 +81,7 @@
                                     <a href="<c:url value='/login' />" title="Log In">Log In</a>
                                 </c:otherwise>
                             </c:choose>
-                        </li>
+                        </li>--%>
                     </ul>
                 </div>
             </div>

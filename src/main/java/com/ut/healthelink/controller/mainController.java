@@ -1,32 +1,19 @@
 package com.ut.healthelink.controller;
 
 import com.ut.healthelink.model.GoogleResponse;
-import com.ut.healthelink.model.User;
 import com.ut.healthelink.model.mailMessage;
-import com.ut.healthelink.model.newsArticle;
-import com.ut.healthelink.model.newsletterSignup;
-import com.ut.healthelink.model.userAccess;
 import com.ut.healthelink.service.emailMessageManager;
-import com.ut.healthelink.service.newsArticleManager;
-import com.ut.healthelink.service.newsletterManager;
-import com.ut.healthelink.service.userManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 
@@ -52,16 +38,7 @@ import org.springframework.web.servlet.view.RedirectView;
 public class mainController {
 
     @Autowired
-    private userManager usermanager;
-
-    @Autowired
     private emailMessageManager emailMessageManager;
-    
-    @Autowired
-    private newsArticleManager newsarticlemanager;
-    
-    @Autowired
-    private newsletterManager newslettermanager;
     
     @Resource(name = "myProps")
     private Properties myProps;
@@ -95,12 +72,12 @@ public class mainController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login() throws Exception {
         
-
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("/login");
-
+        ModelAndView mav = new ModelAndView(new RedirectView("/home"));
         return mav;
-
+        
+        //ModelAndView mav = new ModelAndView();
+        //mav.setViewName("/login");
+        //return mav;
     }
 
     /**
@@ -114,11 +91,12 @@ public class mainController {
     @RequestMapping(value = "/loginfailed", method = RequestMethod.GET)
     public ModelAndView loginerror(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("/login");
-        mav.addObject("error", "true");
+        ModelAndView mav = new ModelAndView(new RedirectView("/home"));
         return mav;
-
+        //ModelAndView mav = new ModelAndView();
+        //mav.setViewName("/login");
+        //mav.addObject("error", "true");
+        //return mav;
     }
 
     /**
@@ -131,7 +109,8 @@ public class mainController {
      */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return new ModelAndView("/login");
+        return new ModelAndView("/home");
+        //return new ModelAndView("/login");
     }
 
     /**
@@ -144,15 +123,9 @@ public class mainController {
      */
     @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView welcome() throws Exception {
-        
-       /* Get a list of active news articles */
-       List<newsArticle> newsArticles = newsarticlemanager.listAllActiveNewsArticles();
        ModelAndView mav = new ModelAndView();
        mav.setViewName("/home");
-       mav.addObject("newsArticles", newsArticles); 
-       
        return mav;
-       
     }
     
     /**
@@ -375,253 +348,18 @@ public class mainController {
     }
 
     /**
-     * The '/forgotPassword' GET request will be used to display the forget password form (In a modal)
-     *
-     *
-     * @return	The forget password form page
-     *
-     *
-     */
-    @RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
-    public ModelAndView forgotPassword() throws Exception {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("/forgotPassword");
-        return mav;
-    }
-    
-    /**
-     * The '/forgotPassword' GET request will be used to display the forget password form (In a modal)
-     *
-     *
-     * @param request
-     * @param session
-     * @return	The forget password form page
-     * @throws java.lang.Exception
-     *
-     *
-     */
-    @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
-    public ModelAndView forgotPasswordPost(HttpServletRequest request, HttpSession session) throws Exception {
-        
-        String remoteIP = request.getRemoteAddr();
-        
-        StringBuilder sb = new StringBuilder();
-       
-       mailMessage messageDetails = new mailMessage();
-        
-       messageDetails.settoEmailAddress("gchan@health-e-link.net");
-       messageDetails.setfromEmailAddress("support@health-e-link.net");
-       messageDetails.setmessageSubject("Health-e-Link Forgot Password IP Spam");
-       
-        sb.append("Remote IP: "+ remoteIP);
-        sb.append("<br /><br />");
-        
-        messageDetails.setmessageBody(sb.toString());
-        
-        emailMessageManager.sendEmail(messageDetails); 
-
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("/about");
-        
-        //Kill created session
-        session.invalidate();
-
-        return mav;
-    }
-
-    /**
-     * The '/forgotPassword.do' POST request will be used to find the account information for the user and send an email.
-     *
-     *
-     * @param identifier
-     */
-    @RequestMapping(value = "/forgotPassword.do", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    Integer findPassword(@RequestParam String identifier) throws Exception {
-
-        Integer userId = usermanager.getUserByIdentifier(identifier);
-
-        if (userId == null) {
-            return 0;
-        } else {
-
-            return userId;
-        }
-
-    }
-
-    /**
-     * The '/sendPassword.do' POST request will be used to send the reset email to the user.
-     *
-     * @param userId The id of the return user.
-     */
-    @RequestMapping(value = "/sendPassword.do", method = RequestMethod.POST)
-    public void sendPassword(@RequestParam Integer userId, HttpServletRequest request) throws Exception {
-        
-        String randomCode = generateRandomCode();
-
-        User userDetails = usermanager.getUserById(userId);
-        userDetails.setresetCode(randomCode);
-
-        /** This section is not in use
-        //Return the sections for the clicked user
-        List<userAccess> userSections = usermanager.getuserSections(userId);
-        List<Integer> userSectionList = new ArrayList<Integer>();
-
-        for (int i = 0; i < userSections.size(); i++) {
-            userSectionList.add(userSections.get(i).getFeatureId());
-        }
-
-        userDetails.setsectionList(userSectionList);
-         **/
-        usermanager.updateUserOnly(userDetails);
-
-        /* Sent Reset Email */
-        mailMessage messageDetails = new mailMessage();
-
-        messageDetails.settoEmailAddress(userDetails.getEmail());
-        messageDetails.setmessageSubject("Health-e-Link Reset Password");
-        
-        String resetURL = request.getRequestURL().toString().replace("sendPassword.do", "resetPassword?b=");
-        
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("Dear " + userDetails.getFirstName() + ",<br />");
-        sb.append("You have recently asked to reset your Health-e-Link password.<br /><br />");
-        sb.append("<a href='" + resetURL + randomCode + "'>Click here to reset your password.</a>");
-
-        messageDetails.setmessageBody(sb.toString());
-        messageDetails.setfromEmailAddress("support@health-e-link.net");
-
-        emailMessageManager.sendEmail(messageDetails);
-
-    }
-
-    /**
-     * The '/resetPassword' GET request will be used to display the reset password form
-     *
-     *
-     * @return	The forget password form page
-     *
-     *
-     */
-    @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
-    public ModelAndView resetPassword(@RequestParam(value = "b", required = false) String resetCode, HttpSession session) throws Exception {
-
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("/resetPassword");
-        mav.addObject("resetCode", resetCode);
-
-        return mav;
-    }
-
-    /**
-     * The '/resetPassword' POST request will be used to display update the users password
-     *
-     * @param resetCode The code that was set to reset a user for.
-     * @param newPassword The password to update the user to
-     *
-     */
-    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
-    public ModelAndView resetPassword(@RequestParam String resetCode, @RequestParam String newPassword, HttpSession session, RedirectAttributes redirectAttr) throws Exception {
-
-        User userDetails = usermanager.getUserByResetCode(resetCode);
-
-        if (userDetails == null) {
-            redirectAttr.addFlashAttribute("msg", "notfound");
-
-            ModelAndView mav = new ModelAndView(new RedirectView("/login"));
-            return mav;
-        } else {
-            userDetails.setresetCode(null);
-            userDetails.setPassword(newPassword);
-            userDetails = usermanager.encryptPW(userDetails);
-
-            //Return the sections for the clicked user
-            List<userAccess> userSections = usermanager.getuserSections(userDetails.getId());
-            List<Integer> userSectionList = new ArrayList<Integer>();
-
-            for (int i = 0; i < userSections.size(); i++) {
-                userSectionList.add(userSections.get(i).getFeatureId());
-            }
-
-            userDetails.setsectionList(userSectionList);
-
-            usermanager.updateUser(userDetails);
-
-            redirectAttr.addFlashAttribute("msg", "updated");
-
-            ModelAndView mav = new ModelAndView(new RedirectView("/login"));
-            return mav;
-        }
-
-    }
-
-    /**
-     * The 'generateRandomCode' function will be used to generate a random access code to reset a users password. The function will call itself until it gets a unique code.
-     *
-     * @return This function returns a randomcode as a string
-     */
-    public String generateRandomCode() {
-
-    	Random random = new Random();
-        String randomCode = new BigInteger(130, random).toString(32);
-       
-        /* Check to make sure there is not reset code already generated */
-        User usedCode = usermanager.getUserByResetCode(randomCode);
-
-        if (usedCode == null) {
-            return randomCode;
-        } 
-        else {
-            return generateRandomCode();
-
-        }
-    }
-    
-    /**
      * The '/emailSignUp.do' function will save the email form.
      * 
      * @param emailAddress	The email address being signed up
+     * @param unsubscribe
      * @param result	The validation result
+     * @return 
      *
      * @throws Exception
      */
     @RequestMapping(value = "/emailSignUp.do", method = RequestMethod.POST)
     public @ResponseBody Integer emailSignUp(@RequestParam(value = "emailAddress", required = true) String emailAddress, @RequestParam(value = "unsubscribe", required = true) boolean unsubscribe) throws Exception {
          
-        if(unsubscribe == true) {
-            newslettermanager.removeEmailAddress(emailAddress);
-            
-            return 3;
-        }
-        else {
-            /* Need to check to see if the email address is already in the system */
-            List<newsletterSignup> emailSignUps = newslettermanager.emailExists(emailAddress);
-
-            if(emailSignUps.size() > 0) {
-                return 2;
-            }
-            else {
-                newsletterSignup emailSignup = new newsletterSignup();
-                emailSignup.setEmailAddress(emailAddress);
-
-                newslettermanager.saveEmailAddress(emailSignup);
-
-                return 1;
-            }
-        }
-    }
-    
-    /**
-     * The '/forgotPassword' POST request is an invalid call and will redirect the user to our about page.
-     *
-     * @return	The about page
-     * @throws java.lang.Exception
-     */
-    @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
-    public ModelAndView forgotPasswordPost() throws Exception {
-        ModelAndView mav = new ModelAndView(new RedirectView("/about"));
-        return mav;
+        return 1;
     }
 }
