@@ -31,7 +31,6 @@ public class solutionsController {
         return mav;
     }
     
-    
     /**
      * The '/case-studies' request will display the case studies page.
      */
@@ -43,6 +42,4 @@ public class solutionsController {
         mav.addObject("pageTitle", "Case Studies");
         return mav;
     }
-   
-    
 }

@@ -78,6 +78,4 @@ public class productSuiteController {
         mav.addObject("pageTitle", "DOC-u-Link");
         return mav;
     }
-    
-    
 }
