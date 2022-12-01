@@ -60,59 +60,6 @@ public class mainController {
 	}
     }
    
-    
-    /**
-     * The '/login' request will serve up the login page.
-     *
-     * @param request
-     * @param response
-     * @return	the login page view
-     * @throws Exception
-     */
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login() throws Exception {
-        
-        ModelAndView mav = new ModelAndView(new RedirectView("/home"));
-        return mav;
-        
-        //ModelAndView mav = new ModelAndView();
-        //mav.setViewName("/login");
-        //return mav;
-    }
-
-    /**
-     * The '/loginfailed' request will serve up the login page displaying the login failed error message
-     *
-     * @param request
-     * @param response
-     * @return	the error object and the login page view
-     * @throws Exception
-     */
-    @RequestMapping(value = "/loginfailed", method = RequestMethod.GET)
-    public ModelAndView loginerror(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        ModelAndView mav = new ModelAndView(new RedirectView("/home"));
-        return mav;
-        //ModelAndView mav = new ModelAndView();
-        //mav.setViewName("/login");
-        //mav.addObject("error", "true");
-        //return mav;
-    }
-
-    /**
-     * The '/logout' request will handle a user logging out of the system. The request will handle front-end users or administrators logging out.
-     *
-     * @param request
-     * @param response
-     * @return	the login page view
-     * @throws Exception
-     */
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return new ModelAndView("/home");
-        //return new ModelAndView("/login");
-    }
-
     /**
      * The '/' request will be the default request of the translator. The request will serve up the home page of the translator.
      *
@@ -361,5 +308,18 @@ public class mainController {
     public @ResponseBody Integer emailSignUp(@RequestParam(value = "emailAddress", required = true) String emailAddress, @RequestParam(value = "unsubscribe", required = true) boolean unsubscribe) throws Exception {
          
         return 1;
+    }
+    
+    /**
+     * The '/settings' request will be the default request of the translator. The request will serve up the home page of the translator.
+     *
+     * @return	the home page view
+     * @throws Exception
+     */
+    @RequestMapping(value = "/settings", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView settings() throws Exception {
+       ModelAndView mav = new ModelAndView();
+       mav.setViewName("/home");
+       return mav;
     }
 }
