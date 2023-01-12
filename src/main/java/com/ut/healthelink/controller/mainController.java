@@ -158,7 +158,8 @@ public class mainController {
     @RequestMapping(value = "/contact", method = RequestMethod.POST)
     public ModelAndView contactPageSend(@RequestParam String name, @RequestParam String company, @RequestParam String address, @RequestParam String city, 
             @RequestParam String state, @RequestParam String zip, @RequestParam String phone, @RequestParam String ext, @RequestParam String fax, @RequestParam String email, 
-            @RequestParam(value="interestedIn", required = false, defaultValue = "") String interestedIn, @RequestParam String comments, HttpServletRequest request) throws Exception {
+            @RequestParam(value="interestedIn", required = false, defaultValue = "") String interestedIn, 
+            @RequestParam(value="comments", required = false, defaultValue = "") String comments, HttpServletRequest request) throws Exception {
         
       
 	String response = request.getParameter("g-recaptcha-response");
@@ -220,7 +221,7 @@ public class mainController {
 
 	messageDetails.setmessageBody(sb.toString());
 
-	if(!"".equals(interestedIn)) {
+	if(!"".equals(interestedIn) && !"".equals(name) && !"".equals(email) && !"".equals(company)) {
 	   emailMessageManager.sendEmail(messageDetails); 
 	}
         
