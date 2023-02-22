@@ -177,54 +177,54 @@ public class mainController {
 	mav.setViewName("/contact");
 	mav.addObject("pageTitle", "Contact Us");
 	
-	mailMessage messageDetails = new mailMessage();
-	messageDetails.setfromEmailAddress("support@health-e-link.net");
-	
 	if(!googleResponse.isSuccess() || !googleResponse.getAction().equals(action) || googleResponse.getScore() < 0.5) {
-	    messageDetails.settoEmailAddress("cmccue@health-e-link.net");
-	    messageDetails.setmessageSubject("Captcha Error - Health-e-Link Contact Form");
+	    //messageDetails.settoEmailAddress("cmccue@health-e-link.net");
+	    //messageDetails.setmessageSubject("Captcha Error - Health-e-Link Contact Form");
 	    
 	    mav.addObject("error","Invalid Captcha!");
 	}
 	else {
+            mailMessage messageDetails = new mailMessage();
+            
+            messageDetails.setfromEmailAddress("support@health-e-link.net");
 	    messageDetails.settoEmailAddress("information@health-e-link.net");
 	    messageDetails.setmessageSubject("Health-e-Link Contact Form Submission");
 	    
 	    mav.addObject("sent","sent");
+            
+            StringBuilder sb = new StringBuilder();
+            sb.append("Name: ").append(name);
+            sb.append("<br /><br />");
+            sb.append("Company / Organization: ").append(company);
+            sb.append("<br /><br />");
+            sb.append("Address: ").append(address);
+            sb.append("<br /><br />");
+            sb.append("City: ").append(city);
+            sb.append("<br /><br />");
+            sb.append("State: ").append(state);
+            sb.append("<br /><br />");
+            sb.append("Zip: ").append(zip);
+            sb.append("<br /><br />");
+            sb.append("Phone: ").append(phone);
+            sb.append("<br /><br />");
+            sb.append("Ext: ").append(ext);
+            sb.append("<br /><br />");
+            sb.append("Fax: ").append(fax);
+            sb.append("<br /><br />");
+            sb.append("Email: ").append(email);
+            sb.append("<br /><br />");
+            sb.append("Interested In: ").append(interestedIn);
+            sb.append("<br /><br />");
+            sb.append("Comments: ").append(comments);
+            sb.append("<br /><br />");
+
+            messageDetails.setmessageBody(sb.toString());
+
+            if(!"".equals(interestedIn) && !"".equals(name) && !"".equals(email) && !"".equals(company)) {
+               emailMessageManager.sendEmail(messageDetails); 
+            }
 	}
 	
-	StringBuilder sb = new StringBuilder();
-	sb.append("Name: ").append(name);
-	sb.append("<br /><br />");
-	sb.append("Company / Organization: ").append(company);
-	sb.append("<br /><br />");
-	sb.append("Address: ").append(address);
-	sb.append("<br /><br />");
-	sb.append("City: ").append(city);
-	sb.append("<br /><br />");
-	sb.append("State: ").append(state);
-	sb.append("<br /><br />");
-	sb.append("Zip: ").append(zip);
-	sb.append("<br /><br />");
-	sb.append("Phone: ").append(phone);
-	sb.append("<br /><br />");
-	sb.append("Ext: ").append(ext);
-	sb.append("<br /><br />");
-	sb.append("Fax: ").append(fax);
-	sb.append("<br /><br />");
-	sb.append("Email: ").append(email);
-	sb.append("<br /><br />");
-	sb.append("Interested In: ").append(interestedIn);
-	sb.append("<br /><br />");
-	sb.append("Comments: ").append(comments);
-	sb.append("<br /><br />");
-
-	messageDetails.setmessageBody(sb.toString());
-
-	if(!"".equals(interestedIn) && !"".equals(name) && !"".equals(email) && !"".equals(company)) {
-	   emailMessageManager.sendEmail(messageDetails); 
-	}
-        
         return mav;
     }
     
