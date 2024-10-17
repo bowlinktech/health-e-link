@@ -5,28 +5,6 @@
 
 <div class="modal fade" id="settingsModal" role="dialog" tabindex="-1" aria-labeledby="Settings" aria-hidden="true" aria-describedby="Settings"></div>
 
-
-<%--<div class="module email-list-signup">
-    <div class="container">
-        <div class="alert alert-danger error" style="display: none;">
-            <strong>Error!</strong> <span id="errMsg">The email address entered is invalid!</span>
-        </div>
-        <div class="alert alert-success success" style="display: none;">
-            <strong>Success!</strong> <span id="successMsg">The email address hass been registered.</span>
-        </div>
-        <form class="form-inline">
-            <h4 class="pull-left">Join Our Email List</h4>
-            <div class="form-group">
-                <label class="sr-only">Join our email list</label>
-                <input class="form-control" type="text" id="emailAddress" placeholder="Email Address">
-            </div>
-            <input type="button" class="btn btn-secondary" value="Submit" id="saveEmail" />
-            <div class="radio">
-                <label><input type="radio" value="1" name="unsubscribe" id="unsubscribe" /> Unsubscribe</label>
-            </div>
-        </form>
-    </div>
-</div>--%>
 <footer class="footer">
     <div class="container">
         <nav>
@@ -68,7 +46,6 @@
                     unsubscribe = true;
                 }
                 
-
                 if (validEmail == true) {
                     $.ajax({
                         url: 'emailSignUp.do',
@@ -99,8 +76,6 @@
                     $('.alert').delay(2000).fadeOut(1000);
                 }
             });
-
-
         });
     });
 
@@ -112,6 +87,5 @@
         else {
             return true;
         }
-
     }
 </script>
