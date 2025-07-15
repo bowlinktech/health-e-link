@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +25,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
 
 /**
  * The mainController class will handle all URL requests that fall outside of specific user or admin controllers
@@ -44,22 +44,28 @@ public class mainController {
     private Properties myProps;
     
     @RequestMapping(value = "/files/{file_name}", method = RequestMethod.GET)
-    public void getFile(@PathVariable("file_name") String fileName, HttpServletResponse response) throws FileNotFoundException {
-	try {
+    public void getFile(@PathVariable("file_name") String fileName, HttpServletResponse response) throws FileNotFoundException, Exception {
+        
+        if(!fileName.contains(".docx")) {
+            response.sendRedirect("/about");
+        }
+        else {
+            try {
 	
-	    File file = ResourceUtils.getFile("classpath:files/"+fileName+".docx");
-	
-	    // get your file as InputStream
-	    InputStream is = new FileInputStream(file);
-	    // copy it to response's OutputStream
-	    org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
-	    response.flushBuffer();
-	 } 
-	catch (IOException ex) {
-	   throw new RuntimeException("IOError writing file to output stream");
-	}
+                File file = ResourceUtils.getFile("classpath:files/"+fileName+".docx");
+
+                // get your file as InputStream
+                InputStream is = new FileInputStream(file);
+                // copy it to response's OutputStream
+                org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
+                response.flushBuffer();
+             } 
+            catch (IOException ex) {
+               throw new RuntimeException("IOError writing file to output stream");
+            }
+        }
     }
-   
+    
     /**
      * The '/' request will be the default request of the translator. The request will serve up the home page of the translator.
      *

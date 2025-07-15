@@ -41,8 +41,6 @@
         <property name="basename" value="messages" />
     </bean>
 	
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
-    
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="${mailserver.host}" />
         <property name="port" value="${mailserver.port}" />
@@ -79,7 +77,6 @@
         <property name="arguments">
             <util:properties>
                 <prop key="directory.rootDir">${directory.rootDir}</prop>
-                <prop key="directory.massOutputPath">${directory.massOutputPath}</prop>
            </util:properties>
         </property>
     </bean>
