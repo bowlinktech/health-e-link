@@ -13,8 +13,6 @@
                 <li><a href="<c:url value='/about'/>" title="About">About</a></li>
                 <li><a href="<c:url value='/contact'/>" title="Contact">Contact Us</a></li>
                 <li><a href="<c:url value='/privacy'/>" title="Contact">Privacy</a></li>
-                <c:if test="${not empty pageContext.request.userPrincipal.name}"><li><a href="<c:url value='/profile'/>" title="My Account">My Account</a></li></c:if>
-                <c:if test="${not empty pageContext.request.userPrincipal.name}"><li><a href="#settingsModal" id="settings" data-toggle="modal" title="Account Settings" class="settings">Account Settings</a></li></c:if>
             </ul>
         </nav>
 

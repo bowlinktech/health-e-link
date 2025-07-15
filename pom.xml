@@ -9,8 +9,7 @@
     <url>http://maven.apache.org</url>
   
     <properties>
-        <org.springframework.version>5.3.38</org.springframework.version>
-        <org.spring.security.version>5.8.11</org.spring.security.version>
+        <org.springframework.version>5.3.39</org.springframework.version>
         <javax.servlet-api.version>4.0.0</javax.servlet-api.version>
         <jsp-api.version>2.3.1</jsp-api.version>
         <org.slf4j.version>1.6.1</org.slf4j.version>
@@ -19,19 +18,14 @@
         <javax.mail.version>1.5.0-b01</javax.mail.version>
         <junit.version>4.13.1</junit.version>
         <jstl.version>1.2</jstl.version>
-        <commons-fileupload.version>1.5</commons-fileupload.version>
         <commons-io.version>2.15.1</commons-io.version>
         <commons-net.version>3.10.0</commons-net.version>
-        <jackson-databind.version>2.12.7.1</jackson-databind.version>
-        <jackson-core.version>2.12.7</jackson-core.version>
-        <jackson-annotations.version>2.12.7</jackson-annotations.version>
-        <poi.version>4.1.2</poi.version>
-        <poi-ooxml.version>4.1.2</poi-ooxml.version>
-        <log4j.version>2.3.2</log4j.version>
+        <jackson-databind.version>2.19.1</jackson-databind.version>
+        <jackson-core.version>2.19.1</jackson-core.version>
+        <jackson-annotations.version>2.19.1</jackson-annotations.version>
+        <log4j.version>2.8.2</log4j.version>
         <commons-validator.version>1.4.0</commons-validator.version>
-        <sax.version>2.0.1</sax.version>
         <apache.poi.version>3.17</apache.poi.version>
-        <xlsx.streamer.version>2.1.0</xlsx.streamer.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
@@ -130,24 +124,6 @@
             <version>${jstl.version}</version>
         </dependency>
 
-        <!-- Spring Security -->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>${org.spring.security.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>${org.spring.security.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>${org.spring.security.version}</version>
-        </dependency>
        
         <!-- Apache Tiles -->
         <dependency>
@@ -156,6 +132,7 @@
             <version>${log4j.version}</version>
             <type>pom</type>
         </dependency>
+        
         <dependency>
             <groupId>org.apache.tiles</groupId>
             <artifactId>tiles-jsp</artifactId>
@@ -183,18 +160,7 @@
         </dependency>
 		
         <!-- Apache Commons Upload -->  
-        <dependency>  
-            <groupId>commons-fileupload</groupId>  
-            <artifactId>commons-fileupload</artifactId>  
-            <version>${commons-fileupload.version}</version>  
-        </dependency>  
-        
-        <dependency>
-          <groupId>commons-io</groupId>
-          <artifactId>commons-io</artifactId>
-          <version>${commons-io.version}</version>
-      </dependency>
-        
+     
         <dependency>
             <groupId>commons-net</groupId>
             <artifactId>commons-net</artifactId>
@@ -218,22 +184,6 @@
             <version>${jackson-databind.version}</version>
         </dependency>
 	   
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>${poi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${poi-ooxml.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml-schemas</artifactId>
-            <version>${poi-ooxml.version}</version>
-        </dependency>
-        
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
@@ -259,23 +209,11 @@
         </dependency>
          
         <dependency>
-            <groupId>sax</groupId>
-            <artifactId>sax</artifactId>
-            <version>${sax.version}</version>
-        </dependency>
-        
-        <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-taglibs</artifactId>
-            <version>${org.spring.security.version}</version>
-        </dependency>
-        
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
@@ -293,22 +231,18 @@
         </dependency>
 
         <dependency>
-          <groupId>com.monitorjbl</groupId>
-          <artifactId>xlsx-streamer</artifactId>
-          <version>${xlsx.streamer.version}</version>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
         </dependency>
-
-        <dependency>
-          <groupId>commons-io</groupId>
-          <artifactId>commons-io</artifactId>
-          <version>${commons-io.version}</version>
-      </dependency>
+        
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>2.0.7</version>
             <type>pom</type>
         </dependency>
+        
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -316,8 +250,8 @@
             <type>jar</type>
         </dependency>
     </dependencies>
+    
     <build>
-        
         <finalName>ROOT</finalName>
     </build>
 </project>
