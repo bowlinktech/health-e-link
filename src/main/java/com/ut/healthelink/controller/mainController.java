@@ -10,11 +10,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Properties;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,65 +69,89 @@ public class mainController {
     /**
      * The '/' request will be the default request of the translator. The request will serve up the home page of the translator.
      *
-     * @param request
-     * @param response
      * @return	the home page view
      * @throws Exception
      */
     @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView welcome() throws Exception {
-       ModelAndView mav = new ModelAndView();
-       mav.setViewName("/home");
-       return mav;
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("home");
+        mav.addObject("pageName","home");
+        mav.addObject("pageId","home");
+        mav.addObject("pageSection","home");
+        mav.addObject("pageTitle","Data exchange software connecting the healthcare community");
+        mav.addObject("pageDescription","Promoting Better Health and Health Care One Community at a Time. Our products and services enable health information exchange between groups of health care providers, community partners, as well as federal, state and local health agencies.");
+        return mav;
     }
     
     /**
      * The '/' head request 
-     * @param request
-     * @param response
      * @return	the login page
      * @throws Exception
      */
     @RequestMapping(value = "/", method = {RequestMethod.HEAD})
     public ModelAndView headRequest() throws Exception { 
-            ModelAndView mav = new ModelAndView(new RedirectView("/home"));
-            return mav;   
+        ModelAndView mav = new ModelAndView(new RedirectView("/home"));
+        return mav;   
     }
     
 
     /**
      * The '/about' GET request will display the about page.
+     * @return 
+     * @throws java.lang.Exception
      */
     @RequestMapping(value = "/about", method = RequestMethod.GET)
     public ModelAndView aboutPage() throws Exception {
-
+        
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/about");
-        mav.addObject("pageTitle", "About Health-e-Link");
+        mav.setViewName("informationPages/about");
+        mav.addObject("pageName","about");
+        mav.addObject("pageId","");
+        mav.addObject("pageSection","");
+        mav.addObject("pageTabTitle","Health-e-Link - About Us");
+        mav.addObject("pageTitle","About Health-e-Link");
+        mav.addObject("pageDescription","With a foundation in community-based healthcare and public health programs, Health-e-link was established to provide cost-effective solutions for managing healthcare information for community-based organizations and public health agencies. Historically, Health-e-link has focused specifically on helping our clients meet the data management needs of federal and state funded healthcare programs.");
+        
         return mav;
     }
     
     /**
      * The '/about/Network-Capabilities' GET request will display the Network Capabilities  page.
+     * @return 
+     * @throws java.lang.Exception
      */
     @RequestMapping(value = "/about/network-capabilities", method = RequestMethod.GET)
     public ModelAndView networkcapabilitiesPage() throws Exception {
 
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/networkcapabilities");
-        mav.addObject("pageTitle", "Network Capabilities");
+        mav.setViewName("informationPages/networkcapabilities");
+        mav.addObject("pageName","networkcapabilities");
+        mav.addObject("pageId","");
+        mav.addObject("pageSection","");
+        mav.addObject("pageTabTitle","Health-e-Link - Network Capabilities");
+        mav.addObject("pageTitle","Network Capabilities");
+        mav.addObject("pageDescription","Health-e-link's technology-based solutions including eReferral, Universal HIE and Clinical Data Warehouse. Health-e-link solutions are hosted within our secure data center and are available for customer use on an ongoing basis. Clients can be configured and operational on Health-e-link within a matter of days. Licensed software may be installed, configured and operated by your IT staff with Health-e-link resources available for technical support as required. Health-e-link solutions are developed on Java and Microsoft SQL Server platforms.");
+        
         return mav;
     }
     
     /**
      * The '/privacy' GEt request will display the privacy page.
+     * @return 
+     * @throws java.lang.Exception
      */
     @RequestMapping(value = "/privacy", method = RequestMethod.GET)
     public ModelAndView privacyPage() throws Exception {
-
+        
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/privacy");
-        mav.addObject("pageTitle", "Privacy");
+        mav.setViewName("informationPages/privacy");
+        mav.addObject("pageName","403");
+        mav.addObject("pageId","");
+        mav.addObject("pageSection","");
+        mav.addObject("pageTabTitle","Health-e-Link - Privacy");
+        mav.addObject("pageTitle","Privacy");
+        mav.addObject("pageDescription","");
         return mav;
     }
 
@@ -136,10 +160,16 @@ public class mainController {
      */
     @RequestMapping(value = "/contact", method = RequestMethod.GET)
     public ModelAndView contactPage() throws Exception {
-
+        
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/contact");
-        mav.addObject("pageTitle", "Contact Us");
+        mav.setViewName("informationPages/contact");
+        mav.addObject("pageName","contact");
+        mav.addObject("pageId","");
+        mav.addObject("pageSection","");
+        mav.addObject("pageTabTitle","Health-e-Link - Contact Us");
+        mav.addObject("pageTitle","Contact Us");
+        mav.addObject("pageDescription","Health-e-link's staff would be happy to contact you and discuss how our technology solutions and support services may help you create expanded service delivery and patient care models, improve your ability manage your network of collaborating healthcare professionals, and track program and population-based health data. Please complete the form below, provide any information you feel is relevant and we'll be in touch soon!");
+
         return mav;
     }
     
@@ -163,9 +193,9 @@ public class mainController {
      */
     @RequestMapping(value = "/contact", method = RequestMethod.POST)
     public ModelAndView contactPageSend(@RequestParam String name, @RequestParam String company, @RequestParam String address, @RequestParam String city, 
-            @RequestParam String state, @RequestParam String zip, @RequestParam String phone, @RequestParam String ext, @RequestParam String fax, @RequestParam String email, 
-            @RequestParam(value="interestedIn", required = false, defaultValue = "") String interestedIn, 
-            @RequestParam(value="comments", required = false, defaultValue = "") String comments, HttpServletRequest request) throws Exception {
+        @RequestParam String state, @RequestParam String zip, @RequestParam String phone, @RequestParam String ext, @RequestParam String fax, @RequestParam String email, 
+        @RequestParam(value="interestedIn", required = false, defaultValue = "") String interestedIn, 
+        @RequestParam(value="comments", required = false, defaultValue = "") String comments, HttpServletRequest request) throws Exception {
         
       
 	String response = request.getParameter("g-recaptcha-response");
@@ -180,9 +210,14 @@ public class mainController {
 	GoogleResponse googleResponse = restTemplate.getForObject(verifyUri, GoogleResponse.class);
 	
 	ModelAndView mav = new ModelAndView();
-	mav.setViewName("/contact");
-	mav.addObject("pageTitle", "Contact Us");
-	
+	mav.setViewName("informationPages/contact");
+        mav.addObject("pageName","contact");
+        mav.addObject("pageId","");
+        mav.addObject("pageSection","");
+        mav.addObject("pageTabTitle","Health-e-Link - Contact Us");
+        mav.addObject("pageTitle","Contact Us");
+        mav.addObject("pageDescription","Health-e-link's staff would be happy to contact you and discuss how our technology solutions and support services may help you create expanded service delivery and patient care models, improve your ability manage your network of collaborating healthcare professionals, and track program and population-based health data. Please complete the form below, provide any information you feel is relevant and we'll be in touch soon!");
+
 	if(!googleResponse.isSuccess() || !googleResponse.getAction().equals(action) || googleResponse.getScore() < 0.5) {
 	    //messageDetails.settoEmailAddress("cmccue@health-e-link.net");
 	    //messageDetails.setmessageSubject("Captcha Error - Health-e-Link Contact Form");
@@ -236,14 +271,13 @@ public class mainController {
     
     /**
      * The '/partners' GEt request will display the partner request page.
+     * @return 
+     * @throws java.lang.Exception
      */
     @RequestMapping(value = "/partners", method = RequestMethod.GET)
     public ModelAndView partnersPage() throws Exception {
-
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("/partners");
-        mav.addObject("pageTitle", "Partners");
-        return mav;
+        ModelAndView mav = new ModelAndView(new RedirectView("/contact"));
+        return mav;   
     }
     
     /**
@@ -306,7 +340,6 @@ public class mainController {
      * 
      * @param emailAddress	The email address being signed up
      * @param unsubscribe
-     * @param result	The validation result
      * @return 
      *
      * @throws Exception
@@ -330,42 +363,49 @@ public class mainController {
        return mav;
     }
     
-    /**
-     * The '/login' request will be the default request of the translator. The request will serve up the home page of the translator.
-     *
-     * @return	the home page view
-     * @throws Exception
-     */
-    @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView login() throws Exception {
-       ModelAndView mav = new ModelAndView();
-       mav.setViewName("/home");
-       return mav;
+    
+    @RequestMapping(value = "/netbeans-tomcat-status-test", method = RequestMethod.HEAD)
+    public ResponseEntity<Void> handleStatusTest() {
+        return ResponseEntity.ok().build();
     }
     
     /**
-     * The '/forgotPassword' request will be the default request of the translator. The request will serve up the home page of the translator.
-     *
-     * @return	the home page view
-     * @throws Exception
+     * The '/403' GEt request will display the contact page.
+     * @return 
+     * @throws java.lang.Exception
      */
-    @RequestMapping(value = "/forgotPassword", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView forgotPassword() throws Exception {
-       ModelAndView mav = new ModelAndView();
-       mav.setViewName("/home");
-       return mav;
+    @RequestMapping(value = {"/403.html", "/403"}, method = RequestMethod.GET)
+    public ModelAndView missingpage() throws Exception {
+        
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("403");
+        mav.addObject("pageName","403");
+        mav.addObject("pageId","");
+        mav.addObject("pageSection","");
+        mav.addObject("pageTabTitle","Health-e-Link - No Permission");
+        mav.addObject("pageTitle","403 Access Denied");
+        mav.addObject("pageDescription","");
+
+        return mav;
     }
     
     /**
-     * The '/forgetPassword' request will be the default request of the translator. The request will serve up the home page of the translator.
-     *
-     * @return	the home page view
-     * @throws Exception
+     * The '/404' GEt request will display the contact page.
+     * @return 
+     * @throws java.lang.Exception
      */
-    @RequestMapping(value = "/forgetPassword", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView forgetPassword() throws Exception {
-       ModelAndView mav = new ModelAndView();
-       mav.setViewName("/home");
-       return mav;
+    @RequestMapping(value = {"/404.html", "/404"}, method = RequestMethod.GET)
+    public ModelAndView errorpage() throws Exception {
+        
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("404");
+        mav.addObject("pageName","contact");
+        mav.addObject("pageId","");
+        mav.addObject("pageSection","");
+        mav.addObject("pageTabTitle","Health-e-Link - Page Not Found");
+        mav.addObject("pageTitle","404 Page Not Found");
+        mav.addObject("pageDescription","");
+
+        return mav;
     }
 }

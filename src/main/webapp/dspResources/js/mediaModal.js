@@ -1,4 +1,4 @@
-define(['jquery', 'bootstrap'], function ($) {
+jQuery(function ($) {
 
 	// save the original function object
 	var _super = $.fn.modal.Constructor;
@@ -176,20 +176,20 @@ define(['jquery', 'bootstrap'], function ($) {
 	});
 
 	$.fn.modal = function (option, _relatedTarget) {
-		return this.each(function () {
-			var $this   = $(this);
-			var data    = $this.data('bs.modal');
-			var options = $.extend({}, _super.DEFAULTS, $this.data(), typeof option === 'object' && option);
+            return this.each(function () {
+                    var $this   = $(this);
+                    var data    = $this.data('bs.modal');
+                    var options = $.extend({}, _super.DEFAULTS, $this.data(), typeof option === 'object' && option);
 
-			if (!data) {
-				$this.data('bs.modal', (data = new Modal(this, options)));
-			}
+                    if (!data) {
+                            $this.data('bs.modal', (data = new Modal(this, options)));
+                    }
 
-			if (typeof option === 'string') {
-				data[option](_relatedTarget);
-			} else if (options.show) {
-				data.show(_relatedTarget);
-			}
-		});
+                    if (typeof option === 'string') {
+                            data[option](_relatedTarget);
+                    } else if (options.show) {
+                            data.show(_relatedTarget);
+                    }
+            });
 	};
 });

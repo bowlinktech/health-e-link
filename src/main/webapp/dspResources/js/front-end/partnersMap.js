@@ -5,8 +5,9 @@
  */
 
 
-require(['./main'], function() {
-    require(['jquery', 'maps'], function($) {
+jQuery(function ($) {
+    
+    $(document).ready(function () {
         
         $.ajax({
             url: 'getPartnerMapEntries.do',

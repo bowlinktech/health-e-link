@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" th:content="${pageDescription}">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Accept-Language" content="en">
+    <title>Data exchange software connecting the healthcare community</title>
+    <link rel="icon" href="data:," />
+    <link href="/dspResources/css/front-end/main.css?v=2" rel="stylesheet" />
+    <link href="/dspResources/css/front-end/themes/theme-health-e-link.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/dspResources/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LdlQq4ZAAAAAO9cnnot0LGzpnVw9ELYP7VKC-Ye"></script>
+    <script src="/dspResources/js/vendor/bootstrap.min.js"></script>
+    <script src="/dspResources/js/mediaModal.js"></script>
+    <script src="/dspResources/js/overlay.js"></script>
+    <script src="/dspResources/js/vendor/sprintf.js"></script>
+    <script src="/dspResources/js/front-end/main.js"></script>
+  </head>
+    <body th:id="${pageId}" th:class="${pageSection}" style="background-color:#fff">
+        <div class="wrap">
+            <header id="header" class="header" role="banner">
+                <div class="header-inner">
+                    <nav class="navbar primary-nav" role="navigation">
+                        <div class="container">
+                            <div class="navbar-header">
+                                <a href="/" class="navbar-brand" title="Data exchange software connecting the healthcare community">
+                                   <span class="identity logo" alt="Health-e-Link Universal Translator" title="Data exchange software connecting the healthcare community"></span>
+                                </a>
+                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                            </div>
+                            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li th:class="${pageName == 'about' || pageName == 'networkcapabilities' ? 'active' : ''}">
+                                        <a href="javascript:void(0);" title="About" data-toggle="dropdown">About <b class="caret"></b></a>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="About dropdown">
+                                            <li><a href="/about" title="About Health-e-Link">About Health-e-Link</a></li>
+                                            <li><a href="/about/network-capabilities" title="Network Capabilities">Network Capabilities</a></li>
+                                        </ul> 
+                                    </li>
+                                    <li th:class="${pageName == 'productSuite' || pageName == 'careConnector' || pageName == 'universal-hie' || pageName == 'clinical-data-warehouse' ? 'active' : ''}">
+                                        <a href="javascript:void(0);" title="Product Suite" data-toggle="dropdown">Product Suite <b class="caret"></b></a>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="Product Suite dropdown">
+                                            <li><a href="/#productSuite" title="Product Suite Overview">Product Suite Overview</a></li>
+                                            <li><a href="/product-suite/careConnector" title="Care Connector">Care Connector</a></li>
+                                            <li><a href="/product-suite/universal-hie" title="Universal HIE">Universal HIE</a></li>
+                                            <li><a href="/product-suite/clinical-data-warehouse" title="Clinical Data Warehouse">Clinical Data Warehouse</a></li>
+                                        </ul> 
+                                    </li>
+                                    <li th:class="${pageName == 'services' ? 'active' : ''}">
+                                        <a href="/support-services" title="Support Services">Support Services</a>
+                                    </li>
+                                    <li th:class="${pageName == 'contact' ? 'active' : ''}">
+                                        <a href="/contact" title="Contact Us">Contact Us</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                    <th:block th:if="${pageName == 'home'}">
+                        <div class="central-graphic container">
+                            <h1>Promoting Better Health and Health Care <small>One Community at a Time</small></h1>
+                            <div class="central-graphic-image image-a">
+                                <img src="/dspResources/img/front-end/health-e-link/photowithchild.jpg" alt="Process referrals and feedback reports electronically with all partners in your care network." />
+                                <div class="caret"></div>
+                            </div>
+                            <div class="central-graphic-image image-b">
+                                <img src="/dspResources/img/front-end/health-e-link/gymPhoto.jpg" alt="Connect healthcare provider EMR systems with partner systems and exchange patient data seamlessly." />
+                                <div class="caret"></div>
+                            </div>
+                            <div class="central-graphic-image image-c">
+                                <img src="/dspResources/img/front-end/health-e-link/reportPhoto.jpg" alt="Securely and effectively manage patient data across multiple programs of care." />
+                                <div class="caret"></div>
+                            </div>
+                            <div class="central-graphic-content">
+                                <h3>
+                                    Our products and services enable health information exchange between<br/>
+                                    groups of health care providers, community partners, as well as federal, state and local health agencies.
+                                </h3>
+
+                                <a href="/about/network-capabilities" title="Network Capabilities" class="btn btn-primary btn-action btn-primary-action">Network Capabilities</a>
+                                <a href="/support-services" title="Support Services" class="btn btn-primary btn-action">Support Services</a>
+                            </div>
+                        </div>
+                    </th:block>
+                    <th:block th:unless="${pageName == 'home'}">
+                        <div class="container">
+                            <h1 class="page-title" th:if="${pageSection == 'CareConnector'}"><span class="page-title-icon pull-left"></span><span>Care Connector</span></h1>
+                            <h1 class="page-title" th:if="${pageSection == 'Health-e-Connect'}"><span class="page-title-icon pull-left"></span><span>File Exchange</span></h1>
+                            <h1 class="page-title" th:if="${pageSection == 'Org'}"><span class="page-title-icon pull-left"></span><span>Organization Profile</span></h1>
+                            <h1 class="page-title" th:if="${pageSection == 'Clients'}"><span class="page-title-icon pull-left"></span><span >Client Management</span></h1>
+                            <h1 class="page-title" th:if="${pageSection == 'Resources'}"><span class="page-title-icon pull-left"></span><span>Resource Manager</span></h1>
+                            <h1 class="page-title" th:if="${pageSection == 'dashboard'}"><span class="page-title-icon pull-left"></span><span >Dashboard</span></h1>
+                            <h1 class="page-title" th:if="${pageSection == 'reports'}"><span class="page-title-icon pull-left"></span><span>Reports</span></h1>
+                            <h1 class="page-title" th:if="${not #strings.isEmpty(pageTitle)}" th:text="${pageTitle}"></h1> 
+                        </div>   
+                    </th:block>
+                </div>
+            </header>
+            <div layout:fragment="content"></div>
+            <footer class="footer">
+                <div class="container">
+                    <nav>
+                        <ul class="nav-inline">
+                            <li><a href="/" title="Home">Home</a></li>
+                            <li><a href="/about" title="About">About</a></li>
+                            <li><a href="/contact" title="Contact">Contact Us</a></li>
+                            <li><a href="/privacy" title="Contact">Privacy</a></li>
+                        </ul>
+                    </nav>
+                    <p class="vcard">
+                        <span class="fn">BOWlink Technologies Inc.</span>
+                    </p>
+                </div>
+            </footer>
+        </div>
+        <th:block layout:fragment="script"></th:block>  
+    </body>
+</html>

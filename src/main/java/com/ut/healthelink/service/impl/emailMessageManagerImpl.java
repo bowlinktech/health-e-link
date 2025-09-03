@@ -8,7 +8,7 @@ package com.ut.healthelink.service.impl;
 
 import com.ut.healthelink.model.mailMessage;
 import com.ut.healthelink.service.emailMessageManager;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
