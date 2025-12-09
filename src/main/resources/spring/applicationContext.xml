@@ -35,11 +35,13 @@
     </bean>
     
     <bean class="org.thymeleaf.spring6.view.ThymeleafViewResolver">
+        <property name="order" value="1"/>
         <property name="templateEngine" ref="templateEngine" />
         <property name="characterEncoding" value="UTF-8" />
     </bean>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="2"/>
         <property name="prefix" value="/WEB-INF/jsp/" />
         <property name="suffix" value=".jsp" />
     </bean>
@@ -89,7 +91,24 @@
         </property>
     </bean>
     
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <!-- Map NoHandlerFoundException to your 404 page -->
+                <prop key="org.springframework.web.servlet.NoHandlerFoundException">error/404</prop>
+            </props>
+        </property>
+
+        <!-- Optional: set the HTTP status code -->
+        <property name="statusCodes">
+            <props>
+                <prop key="error/404">404</prop>
+            </props>
+        </property>
+    </bean>
+    
     <mvc:annotation-driven />
+    <mvc:default-servlet-handler />
     <mvc:resources mapping="/dspResources/**" location="/dspResources/" /> 
     <mvc:resources mapping="/headerImages/**" location="file:${directory.rootDir}/headerimages/" />
     <mvc:resources mapping="/videoFiles/**" location="file:${directory.rootDir}/videos/" />

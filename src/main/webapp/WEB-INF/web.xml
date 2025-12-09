@@ -27,6 +27,10 @@
             <param-name>contextConfigLocation</param-name>
             <param-value/>
         </init-param>
+        <init-param>
+            <param-name>throwExceptionIfNoHandlerFound</param-name>
+            <param-value>true</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
         <multipart-config>
             <max-file-size>104857600</max-file-size>
@@ -42,11 +46,11 @@
     
     <error-page>
         <error-code>404</error-code>
-        <location>/404.html</location>
+        <location>/error/404</location>
     </error-page>
     <error-page>
         <error-code>403</error-code>
-        <location>/403.html</location>
+        <location>/error/403</location>
     </error-page>
    
     <filter>
