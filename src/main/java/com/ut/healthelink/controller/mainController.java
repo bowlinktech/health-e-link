@@ -374,7 +374,7 @@ public class mainController {
      * @return 
      * @throws java.lang.Exception
      */
-    @RequestMapping(value = {"/403.html", "/403","/error/403.html","/error/403"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/403.html", "/403","/error/403.html","/error/403"}, method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView missingpage() throws Exception {
         
         ModelAndView mav = new ModelAndView();
@@ -394,7 +394,7 @@ public class mainController {
      * @return 
      * @throws java.lang.Exception
      */
-    @RequestMapping(value = {"/404.html", "/404","/error/404.html","/error/404"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/404.html", "/404","/error/404.html","/error/404"}, method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView errorpage() throws Exception {
         
         ModelAndView mav = new ModelAndView();
