@@ -27,7 +27,7 @@ public class BotProbeBlockFilter implements Filter {
         || path.endsWith(".cgi") || path.endsWith(".env") || path.endsWith("wsman")
         || path.equals("/xmlrpc.php") || path.equals("/wp-login.php")
         || path.startsWith("/wp-") || path.startsWith("/wordpress/")
-        || path.startsWith("/.git/") || path.equals("/.env")) {
+        || path.startsWith("/.git/") || path.equals("/.env") || path.equals("/files/upload")) {
 
       // Important: do NOT touch session, do NOT forward to a view
       res.setStatus(HttpServletResponse.SC_NOT_FOUND);
