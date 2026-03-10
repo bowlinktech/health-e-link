@@ -43,7 +43,7 @@ public class mainController {
     @Resource(name = "myProps")
     private Properties myProps;
     
-    @RequestMapping(value = "/files/{file_name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/files/{file_name}", method = {RequestMethod.GET, RequestMethod.POST})
     public void getFile(@PathVariable("file_name") String fileName, HttpServletResponse response) throws FileNotFoundException, Exception {
         
         if(!fileName.contains(".docx")) {
