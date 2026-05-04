@@ -17,10 +17,10 @@
         <org.springframework.version>6.2.17</org.springframework.version>
         <org.springWebMVC.version>6.2.17</org.springWebMVC.version>
         <jsp-api.version>2.3.1</jsp-api.version>
-        <thymeleaf.version>3.1.3.RELEASE</thymeleaf.version>
+        <thymeleaf.version>3.1.4.RELEASE</thymeleaf.version>
         <thymeleaf.layout.version>3.4.0</thymeleaf.layout.version>
         <jakarta.validation-api.version>3.1.1</jakarta.validation-api.version>
-        <jakarta.mail-api.version>2.0.1</jakarta.mail-api.version>
+        <jakarta.mail-api.version>2.0.2</jakarta.mail-api.version>
         <jakarta.xml.soap-api.version>3.0.2</jakarta.xml.soap-api.version>
         <jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
         <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>

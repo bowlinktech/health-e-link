@@ -13,6 +13,7 @@ import java.util.Properties;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.Year;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -152,6 +153,10 @@ public class mainController {
         mav.addObject("pageTabTitle","Health-e-Link - Privacy");
         mav.addObject("pageTitle","Privacy");
         mav.addObject("pageDescription","");
+        
+        int year = Year.now().getValue();
+        mav.addObject("currYear",year);
+        
         return mav;
     }
 
