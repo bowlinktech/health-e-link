@@ -14,8 +14,8 @@
     <url>http://maven.apache.org</url>
   
     <properties>
-        <org.springframework.version>6.2.17</org.springframework.version>
-        <org.springWebMVC.version>6.2.17</org.springWebMVC.version>
+        <org.springframework.version>6.2.18</org.springframework.version>
+        <org.springWebMVC.version>6.2.18</org.springWebMVC.version>
         <jsp-api.version>2.3.1</jsp-api.version>
         <thymeleaf.version>3.1.5.RELEASE</thymeleaf.version>
         <thymeleaf.layout.version>3.4.0</thymeleaf.layout.version>
