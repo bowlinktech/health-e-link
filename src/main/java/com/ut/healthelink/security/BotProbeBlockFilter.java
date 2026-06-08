@@ -24,7 +24,7 @@ public class BotProbeBlockFilter implements Filter {
     
     // Block obvious probes (any depth)
     if (path.endsWith(".php") || path.endsWith(".asp") || path.endsWith(".aspx") || path.endsWith(".gz")
-        || path.endsWith(".cgi") || path.endsWith(".env") || path.endsWith("wsman")
+        || path.endsWith(".cgi") || path.endsWith(".env") || path.endsWith("wsman") || path.endsWith(".map")
         || path.equals("/xmlrpc.php") || path.equals("/wp-login.php")
         || path.startsWith("/wp-") || path.startsWith("/wordpress/")
         || path.startsWith("/.git/") || path.equals("/.env") || path.equals("/files/upload")) {
